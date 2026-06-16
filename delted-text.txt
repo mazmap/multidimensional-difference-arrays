@@ -1,0 +1,225 @@
+\begin{frame}[fragile]{One-dimensional difference arrays}
+    \begin{columns}[T]
+	\begin{column}{0.45\textwidth}
+	    This concept can be applied to multiple queries. 
+	    \begin{itemize}
+		\item Q1: Update elements at indices in \( \{1,2,3\} \) by \( +1 \)
+		\item Q2: Update elements at indices in \( \{2,3\} \) by \( +2 \)
+		\item Q3: Update elements at indices in \( \{5,6,7,8\} \) by \( -1 \)
+	    \end{itemize}
+	    Then form \( \texttt{d} = \texttt{d}_1 + \texttt{d}_2 + \texttt{d}_3 \). 
+	\end{column}
+	\begin{column}{0.5\textwidth}
+	    \centering
+	    \begin{tikzpicture}
+		\def\cellWidth{0.6cm}    % Width of each array cell
+		\def\cellHeight{0.6cm}   % Height of each array cell
+		\def\indexGap{0.25cm}     % Vertical gap between indices and the array grid
+		\def\rowBlockGap{1.2cm}  % Total vertical spacing from the top of one array row block to the next
+		
+		% ==========================================
+		% Macro 1: Draw an array row
+		% #1: label text (e.g., A:)
+		% #2: comma-separated list of value/highlight pairs (e.g., 2/0, 6/1, 2/1) 
+		%     where 0 = normal cell, 1 = green highlighted cell
+		% #3: maximum index (e.g., 8 for 9 elements)
+		% #4: absolute y-coordinate for the *top* of the array grid
+		% ==========================================
+		\newcommand{\drawArrayRow}[4]{
+		    \begin{scope}[shift={(0,#4)}]
+			% Label "A:" at the left
+			\node at (-0.3, -\cellHeight/2) {#1};
+			
+			% Draw column indices above the array
+			\foreach \i in {0,...,#3} {
+			    \node[font=\footnotesize] at (\i*\cellWidth + \cellWidth/2, \indexGap) {\i};
+			}
+			
+			% 1. Fill the backgrounds for highlighted cells first
+			\foreach \val/\hl [count=\i from 0] in {#2} {
+			    \ifnum\hl=1
+				\fill[Green, opacity=0.1] (\i*\cellWidth, 0) rectangle ++(\cellWidth, -\cellHeight);
+			    \fi
+			}
+			
+			% 2. Draw the base black grid (prevents overlapping thick lines)
+			\draw[thick] (0, 0) grid[xstep=\cellWidth, ystep=\cellHeight] ++(#3*\cellWidth+\cellWidth, -\cellHeight);
+			
+			% 3. Redraw the green borders over the grid for highlighted cells
+			\foreach \val/\hl [count=\i from 0] in {#2} {
+			    \ifnum\hl=1
+				\draw[Green, thick] (\i*\cellWidth, 0) rectangle ++(\cellWidth, -\cellHeight);
+			    \fi
+			}
+			
+			% 4. Add the text nodes into the cells
+			\foreach \val/\hl [count=\i from 0] in {#2} {
+			    \ifnum\hl=1
+				\node[math node,text=Green] at (\i*\cellWidth + \cellWidth/2, -\cellHeight/2) {\val};
+			    \else
+				\node[math node,text=black] at (\i*\cellWidth + \cellWidth/2, -\cellHeight/2) {\val};
+			    \fi
+			}
+		    \end{scope}
+		}
+		
+		% ==========================================
+		% Macro 2: Draw a query arrow and text
+		% #1: query text (e.g., Apply Q1)
+		% #2: absolute y-coordinate to center the query block vertically
+		% ==========================================
+		\newcommand{\drawQueryBlock}[2]{
+		    \begin{scope}[shift={(0,#2)}]
+			 % Vertical arrow
+			 \draw[-Stealth, thick] (-0.3, 0.1) -- (-0.3, -0.65);
+			 % Query text to the right
+			 \node[anchor=north west, inner sep=0pt] at (0, 0) {#1};
+		    \end{scope}
+		}
+
+		\def\maxIndex{8} 
+
+		\drawArrayRow{$\texttt{d}_1$:}{0/0, +1/0, 0/0, 0/0, -1/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{0}
+		
+		\drawArrayRow{$\texttt{d}_2$:}{0/0, 0/0, +2/0, 0/0, -2/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{-\rowBlockGap}
+		
+		\drawArrayRow{$\texttt{d}_3$:}{0/0, 0/0, 0/0, 0/0, 0/0, -1/0, 0/0, 0/0, 0/0}{\maxIndex}{-2*\rowBlockGap}
+
+		\drawQueryBlock{$+$}{-2.75*\rowBlockGap}
+
+		\drawArrayRow{$\texttt{d}$:}{0/0, +1/0, +2/0, 0/0, -3/0, -1/0, 0/0, 0/0, 0/0}{\maxIndex}{-3.5*\rowBlockGap}
+
+	    \end{tikzpicture}
+	\end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{One-dimensional difference arrays}
+    \begin{columns}[T]
+	\begin{column}{0.45\textwidth}
+	    The cumulative sum distributes over \( \texttt{d} = \texttt{d}_1 + \texttt{d}_2 + \texttt{d}_3 \):
+	    \begin{align*}
+		&\sum_{j=0}^i \texttt{d}[j] \\
+		&= \sum_{j=0}^i \left(\texttt{d}_1[j] + \texttt{d}_3[j] + \texttt{d}_3[j] \right) \\
+		&= \sum_{j=0}^i \texttt{d}_1[j] + \sum_{j=0}^i \texttt{d}_2[j] + \sum_{j=0}^i \texttt{d}_3[j]
+	    \end{align*}
+	    Hence, \( \Sigma \texttt{d} = \Sigma\texttt{d}_1 + \Sigma\texttt{d}_2 + \Sigma\texttt{d}_3 \). 
+
+	    Finally add \( \Sigma\texttt{d} \) to \texttt{A}. 
+	\end{column}
+	\begin{column}{0.5\textwidth}
+	    \centering
+	    \begin{tikzpicture}
+		\def\cellWidth{0.6cm}    % Width of each array cell
+		\def\cellHeight{0.6cm}   % Height of each array cell
+		\def\indexGap{0.25cm}     % Vertical gap between indices and the array grid
+		\def\rowBlockGap{1.2cm}  % Total vertical spacing from the top of one array row block to the next
+		
+		% ==========================================
+		% Macro 1: Draw an array row
+		% #1: label text (e.g., A:)
+		% #2: comma-separated list of value/highlight pairs (e.g., 2/0, 6/1, 2/1) 
+		%     where 0 = normal cell, 1 = green highlighted cell
+		% #3: maximum index (e.g., 8 for 9 elements)
+		% #4: absolute y-coordinate for the *top* of the array grid
+		% ==========================================
+		\newcommand{\drawArrayRow}[4]{
+		    \begin{scope}[shift={(0,#4)}]
+			% Label "A:" at the left
+			\node[anchor=east] at (0, -\cellHeight/2) {#1};
+			
+			% Draw column indices above the array
+			\foreach \i in {0,...,#3} {
+			    \node[font=\footnotesize] at (\i*\cellWidth + \cellWidth/2, \indexGap) {\i};
+			}
+			
+			% 1. Fill the backgrounds for highlighted cells first
+			\foreach \val/\hl [count=\i from 0] in {#2} {
+			    \ifnum\hl=1
+				\fill[Green, opacity=0.1] (\i*\cellWidth, 0) rectangle ++(\cellWidth, -\cellHeight);
+			    \fi
+			}
+			
+			% 2. Draw the base black grid (prevents overlapping thick lines)
+			\draw[thick] (0, 0) grid[xstep=\cellWidth, ystep=\cellHeight] ++(#3*\cellWidth+\cellWidth, -\cellHeight);
+			
+			% 3. Redraw the green borders over the grid for highlighted cells
+			\foreach \val/\hl [count=\i from 0] in {#2} {
+			    \ifnum\hl=1
+				\draw[Green, thick] (\i*\cellWidth, 0) rectangle ++(\cellWidth, -\cellHeight);
+			    \fi
+			}
+			
+			% 4. Add the text nodes into the cells
+			\foreach \val/\hl [count=\i from 0] in {#2} {
+			    \ifnum\hl=1
+				\node[math node,text=Green] at (\i*\cellWidth + \cellWidth/2, -\cellHeight/2) {\val};
+			    \else
+				\node[math node,text=black] at (\i*\cellWidth + \cellWidth/2, -\cellHeight/2) {\val};
+			    \fi
+			}
+		    \end{scope}
+		}
+		
+		% ==========================================
+		% Macro 2: Draw a query arrow and text
+		% #1: query text (e.g., Apply Q1)
+		% #2: absolute y-coordinate to center the query block vertically
+		% ==========================================
+		\newcommand{\drawQueryBlock}[2]{
+		    \begin{scope}[shift={(0,#2)}]
+			 % Vertical arrow
+			 \draw[-Stealth, thick] (-0.3, 0.1) -- (-0.3, -0.65);
+			 % Query text to the right
+			 \node[anchor=north west, inner sep=0pt] at (0, 0) {#1};
+		    \end{scope}
+		}
+
+		\def\maxIndex{8} 
+
+		\drawArrayRow{$\Sigma\texttt{d}_1$:}{0/0, 1/0, 1/0, 1/0, 0/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{0}
+		
+		\drawArrayRow{$\Sigma\texttt{d}_2$:}{0/0, 0/0, 2/0, 2/0, 0/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{-\rowBlockGap}
+		
+		\drawArrayRow{$\Sigma\texttt{d}_3$:}{0/0, 0/0, 0/0, 0/0, 0/0, -1/0, -1/0, -1/0, -1/0}{\maxIndex}{-2*\rowBlockGap}
+
+		\drawQueryBlock{$+$}{-2.75*\rowBlockGap}
+
+		\drawArrayRow{$\Sigma\texttt{d}$:}{0/0, 1/0, 3/0, 3/0, 0/0, -1/0, -1/0, -1/0, -1/0}{\maxIndex}{-3.5*\rowBlockGap}
+
+	    \end{tikzpicture}
+	\end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{One-dimensional difference arrays}
+    \begin{columns}[T]
+	\begin{column}{0.5\textwidth}
+	    \textbf{Non-formal difference array algorithm:}
+
+	    Input: Array \texttt{A} of size \( N \) and \( L \) queries of size at most \( N \)
+	    \begin{enumerate}
+		\item Initialize array \texttt{d} of size \( N \) 
+		\item For every query add two markers to \texttt{d}
+		\item Form the cumulative sum \( \Sigma\texttt{d} \)
+		\item Add \( \Sigma\texttt{d} \) to \texttt{A}
+	    \end{enumerate}
+	\end{column}
+	\begin{column}{0.45\textwidth}
+	    \textbf{Runtime analysis:}
+
+	    \begin{itemize}
+		\item Initializing \texttt{d} in \( \mathcal{O}(N) \)
+		\item Per query placing two markers, i.e. in total \( \mathcal{O}(L) \) markers
+		\item Forming \( \Sigma\texttt{d} \) in \( \mathcal{O}(N) \) by computing 
+		    \begin{equation*}
+			\sum_{j=0}^i \texttt{d}[j] = \texttt{d}[i] + \sum_{j=0}^{i-1} \texttt{d}[j]
+		    \end{equation*}
+		    (\(N-2\) additions, \(N-1\) reads)
+		\item Adding \( \Sigma\texttt{d} \) to \texttt{A} in \( \mathcal{O}(N) \). 
+	    \end{itemize}
+	    In total: \( \mathcal{O}(N + L) \). 
+	\end{column}
+    \end{columns}
+\end{frame}
+

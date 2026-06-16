@@ -1,4 +1,4 @@
-\documentclass[t,10pt]{beamer}
+\documentclass[t,10pt,handout]{beamer}
 
 % ==========================================
 % EXACT CANVAS GEOMETRY
@@ -189,10 +189,10 @@
 % --- SLIDE 2: OVERVIEW ---
 \begin{frame}{What is this talk about?}
     \begin{itemize}[<+->]
-        \item A runtime optimization of \( L \) update queries on an array of size \( N \): 
+        \item A runtime optimization for applying \( L \) update queries to an array of size \( N \): 
             \begin{center}
                 \Large
-                \( \mathcal{O}(N\cdot L) \longrightarrow \mathcal{O}(N + L) \)
+                \( \mathcal{O}(L\cdot N) \longrightarrow \mathcal{O}(L + N) \)
             \end{center}
         \item Simple heuristic for 1D, 2D and 3D arrays
         \item For general dimension: \emph{Discrete Calculus}
@@ -203,7 +203,7 @@
 % --- SLIDE 3: 1D ARRAYS ---
 \begin{frame}[fragile]{One-dimensional difference arrays}
     \begin{columns}[T]
-	\begin{column}{0.45\textwidth}
+	\begin{column}<1->{0.45\textwidth}
 	    \begin{tikzpicture}
 		\def\cellWidth{0.6cm}    % Width of each array cell
 		\def\cellHeight{0.6cm}   % Height of each array cell
@@ -274,67 +274,24 @@
 
 		\drawArrayRow{A:}{\ast/0, \ast/0, \ast/0, \ast/0, \ast/0, \ast/0, \ast/0, \ast/0, \ast/0}{\maxIndex}{0}
 		
-		\drawQueryBlock{Apply Q1}{-\rowBlockGap/2}
+		\drawQueryBlock{Apply query}{-\rowBlockGap/2}
 		
-		\drawArrayRow{A:}{\ast/0, +1/1, +1/1, +1/1, \ast/0, \ast/0, \ast/0, \ast/0, \ast/0}{\maxIndex}{-\rowBlockGap}
+		\drawArrayRow{A:}{\ast/0, +C/1, +C/1, +C/1, \ast/0, \ast/0, \ast/0, \ast/0, \ast/0}{\maxIndex}{-\rowBlockGap}
 		
-		\drawQueryBlock{Apply Q2}{-\rowBlockGap - \rowBlockGap/2}
-		
-		\drawArrayRow{A:}{\ast/0, \ast/0, +2/1, +2/1, \ast/0, \ast/0, \ast/0, \ast/0, \ast/0}{\maxIndex}{-2*\rowBlockGap}
-		
-		\drawQueryBlock{Apply Q3}{-2*\rowBlockGap - \rowBlockGap/2}
-		
-		\drawArrayRow{A:}{\ast/0, \ast/0, \ast/0, \ast/0, \ast/0, -1/1, -1/1, -1/1, -1/1}{\maxIndex}{-3*\rowBlockGap}
 	    \end{tikzpicture}
+
+        \vspace{0.5cm}
+
+        \uncover<2->{
+        \textbf{General idea} for an array of size \( N \) and \( L \) queries:
+
+        \vspace{0.2cm}
+
+        "Mark" \( L \) queries in \( \mathcal{O}(L) \) and perform the updates later in one sweep in \( \mathcal{O}(N) \). 
+        }
 	\end{column}
 
-    \begin{column}{0.45\textwidth}
-	    Consider a one-dimensional array \( \texttt{A} \) of size \( 8 \). 
-
-	    Apply the queries
-	    \begin{itemize}
-		\item Q1: Update elements at indices in \( \{1,2,3\} \) by \( +1 \)
-		\item Q2: Update elements at indices in \( \{2,3\} \) by \( +2 \)
-		\item Q3: Update elements at indices in \( \{5,6,7,8\} \) by \( -1 \)
-	    \end{itemize}
-	\end{column}
-
-    \end{columns}
-\end{frame}
-
-\begin{frame}{One-dimensional difference arrays}
-    Use two column layout and describe informal naive algorithm so that the runtime analysis is clearer. 
-
-    \textbf{Runtime analysis:}
-    \begin{itemize}
-	\item One-dimensional array of size \( N \)
-        \item \( Q \) queries for each of which the update range is at most of size \( N \)
-    \end{itemize}
-    Time complexity: \( \mathcal{O}(Q\cdot N) \)
-
-    \vspace*{0.4cm}
-    \textbf{We can do MUCH better!}
-\end{frame}
-
-\begin{frame}[fragile]{One-dimensional difference arrays}
-    \begin{columns}[T]
-	\begin{column}{0.4\textwidth}
-	    We could also apply the query 
-	    \begin{itemize}
-		\item Q1: Update elements at indices in \( \{1,2,3\} \) by \( +1 \)
-	    \end{itemize}
-	    differently: 
-
-	    \begin{enumerate}
-		\item Initialize an array \texttt{d} of size 8
-		\item Add \( +1 \) at index \( 1 \)
-		\item Add \( -1 \) at index \( 4 \)
-		\item Take the cumulative sum over the entire array \texttt{d}, that is \( \texttt{d}[i] = \sum_{j=0}^i \texttt{d}[j] \)
-		\item Add \texttt{d} to \texttt{A} 
-	    \end{enumerate}
-	\end{column}
-
-	\begin{column}{0.55\textwidth}
+    \begin{column}<3->{0.50\textwidth}
 	    \centering
 	    \begin{tikzpicture}
 		\def\cellWidth{0.6cm}    % Width of each array cell
@@ -353,7 +310,7 @@
 		\newcommand{\drawArrayRow}[4]{
 		    \begin{scope}[shift={(0,#4)}]
 			% Label "A:" at the left
-			\node at (-0.3, -\cellHeight/2) {{\ttfamily #1}};
+            \node[anchor=east] at (0, -\cellHeight/2) {#1};
 			
 			% Draw column indices above the array
 			\foreach \i in {0,...,#3} {
@@ -404,244 +361,69 @@
 
 		\def\maxIndex{8} 
 
-		\drawArrayRow{D:}{0/0, 0/0, 0/0, 0/0, 0/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{0}
+        \drawArrayRow{\texttt{d}:}{0/0, 0/0, 0/0, 0/0, 0/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{0}
 		
-		\drawQueryBlock{Mark Q1}{-\rowBlockGap/2}
+		\drawQueryBlock{Mark query}{-\rowBlockGap/2}
 		
-		\drawArrayRow{D:}{0/0, +1/1, 0/0, 0/0, -1/1, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{-\rowBlockGap}
+        \drawArrayRow{\texttt{d}:}{0/0, +C/1, 0/0, 0/0, -C/1, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{-\rowBlockGap}
 		
-		\drawQueryBlock{Cumulative Sum}{-\rowBlockGap - \rowBlockGap/2}
+		\drawQueryBlock{Cumulative sum}{-\rowBlockGap - \rowBlockGap/2}
 		
-		\drawArrayRow{D:}{0/0, 1/0, 1/0, 1/0, 0/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{-2*\rowBlockGap}
+        \drawArrayRow{\(\Sigma\) \texttt{d}:}{0/0, C/0, C/0, C/0, 0/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{-2*\rowBlockGap}
+
+		\drawQueryBlock{Cumulative Sum}{-2*\rowBlockGap - \rowBlockGap/2}
+		
+        \drawArrayRow{\texttt{A} + \texttt{\(\Sigma\)d}:}{*/0, +C/0, +C/0, +C/0, */0, */0, */0, */0, */0}{\maxIndex}{-3*\rowBlockGap}
 	    \end{tikzpicture}
 	\end{column}
-    \end{columns}
- 
-\end{frame}
 
-\begin{frame}[fragile]{One-dimensional difference arrays}
-    \begin{columns}[T]
-	\begin{column}{0.45\textwidth}
-	    This concept can be applied to multiple queries. 
-	    \begin{itemize}
-		\item Q1: Update elements at indices in \( \{1,2,3\} \) by \( +1 \)
-		\item Q2: Update elements at indices in \( \{2,3\} \) by \( +2 \)
-		\item Q3: Update elements at indices in \( \{5,6,7,8\} \) by \( -1 \)
-	    \end{itemize}
-	    Then form \( \texttt{d} = \texttt{d}_1 + \texttt{d}_2 + \texttt{d}_3 \). 
-	\end{column}
-	\begin{column}{0.5\textwidth}
-	    \centering
-	    \begin{tikzpicture}
-		\def\cellWidth{0.6cm}    % Width of each array cell
-		\def\cellHeight{0.6cm}   % Height of each array cell
-		\def\indexGap{0.25cm}     % Vertical gap between indices and the array grid
-		\def\rowBlockGap{1.2cm}  % Total vertical spacing from the top of one array row block to the next
-		
-		% ==========================================
-		% Macro 1: Draw an array row
-		% #1: label text (e.g., A:)
-		% #2: comma-separated list of value/highlight pairs (e.g., 2/0, 6/1, 2/1) 
-		%     where 0 = normal cell, 1 = green highlighted cell
-		% #3: maximum index (e.g., 8 for 9 elements)
-		% #4: absolute y-coordinate for the *top* of the array grid
-		% ==========================================
-		\newcommand{\drawArrayRow}[4]{
-		    \begin{scope}[shift={(0,#4)}]
-			% Label "A:" at the left
-			\node at (-0.3, -\cellHeight/2) {#1};
-			
-			% Draw column indices above the array
-			\foreach \i in {0,...,#3} {
-			    \node[font=\footnotesize] at (\i*\cellWidth + \cellWidth/2, \indexGap) {\i};
-			}
-			
-			% 1. Fill the backgrounds for highlighted cells first
-			\foreach \val/\hl [count=\i from 0] in {#2} {
-			    \ifnum\hl=1
-				\fill[Green, opacity=0.1] (\i*\cellWidth, 0) rectangle ++(\cellWidth, -\cellHeight);
-			    \fi
-			}
-			
-			% 2. Draw the base black grid (prevents overlapping thick lines)
-			\draw[thick] (0, 0) grid[xstep=\cellWidth, ystep=\cellHeight] ++(#3*\cellWidth+\cellWidth, -\cellHeight);
-			
-			% 3. Redraw the green borders over the grid for highlighted cells
-			\foreach \val/\hl [count=\i from 0] in {#2} {
-			    \ifnum\hl=1
-				\draw[Green, thick] (\i*\cellWidth, 0) rectangle ++(\cellWidth, -\cellHeight);
-			    \fi
-			}
-			
-			% 4. Add the text nodes into the cells
-			\foreach \val/\hl [count=\i from 0] in {#2} {
-			    \ifnum\hl=1
-				\node[math node,text=Green] at (\i*\cellWidth + \cellWidth/2, -\cellHeight/2) {\val};
-			    \else
-				\node[math node,text=black] at (\i*\cellWidth + \cellWidth/2, -\cellHeight/2) {\val};
-			    \fi
-			}
-		    \end{scope}
-		}
-		
-		% ==========================================
-		% Macro 2: Draw a query arrow and text
-		% #1: query text (e.g., Apply Q1)
-		% #2: absolute y-coordinate to center the query block vertically
-		% ==========================================
-		\newcommand{\drawQueryBlock}[2]{
-		    \begin{scope}[shift={(0,#2)}]
-			 % Vertical arrow
-			 \draw[-Stealth, thick] (-0.3, 0.1) -- (-0.3, -0.65);
-			 % Query text to the right
-			 \node[anchor=north west, inner sep=0pt] at (0, 0) {#1};
-		    \end{scope}
-		}
-
-		\def\maxIndex{8} 
-
-		\drawArrayRow{$\texttt{d}_1$:}{0/0, +1/0, 0/0, 0/0, -1/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{0}
-		
-		\drawArrayRow{$\texttt{d}_2$:}{0/0, 0/0, +2/0, 0/0, -2/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{-\rowBlockGap}
-		
-		\drawArrayRow{$\texttt{d}_3$:}{0/0, 0/0, 0/0, 0/0, 0/0, -1/0, 0/0, 0/0, 0/0}{\maxIndex}{-2*\rowBlockGap}
-
-		\drawQueryBlock{$+$}{-2.75*\rowBlockGap}
-
-		\drawArrayRow{$\texttt{d}$:}{0/0, +1/0, +2/0, 0/0, -3/0, -1/0, 0/0, 0/0, 0/0}{\maxIndex}{-3.5*\rowBlockGap}
-
-	    \end{tikzpicture}
-	\end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{One-dimensional difference arrays}
-    \begin{columns}[T]
-	\begin{column}{0.45\textwidth}
-	    The cumulative sum distributes over \( \texttt{d} = \texttt{d}_1 + \texttt{d}_2 + \texttt{d}_3 \):
-	    \begin{align*}
-		&\sum_{j=0}^i \texttt{d}[j] \\
-		&= \sum_{j=0}^i \left(\texttt{d}_1[j] + \texttt{d}_3[j] + \texttt{d}_3[j] \right) \\
-		&= \sum_{j=0}^i \texttt{d}_1[j] + \sum_{j=0}^i \texttt{d}_2[j] + \sum_{j=0}^i \texttt{d}_3[j]
-	    \end{align*}
-	    Hence, \( \Sigma \texttt{d} = \Sigma\texttt{d}_1 + \Sigma\texttt{d}_2 + \Sigma\texttt{d}_3 \). 
-
-	    Finally add \( \Sigma\texttt{d} \) to \texttt{A}. 
-	\end{column}
-	\begin{column}{0.5\textwidth}
-	    \centering
-	    \begin{tikzpicture}
-		\def\cellWidth{0.6cm}    % Width of each array cell
-		\def\cellHeight{0.6cm}   % Height of each array cell
-		\def\indexGap{0.25cm}     % Vertical gap between indices and the array grid
-		\def\rowBlockGap{1.2cm}  % Total vertical spacing from the top of one array row block to the next
-		
-		% ==========================================
-		% Macro 1: Draw an array row
-		% #1: label text (e.g., A:)
-		% #2: comma-separated list of value/highlight pairs (e.g., 2/0, 6/1, 2/1) 
-		%     where 0 = normal cell, 1 = green highlighted cell
-		% #3: maximum index (e.g., 8 for 9 elements)
-		% #4: absolute y-coordinate for the *top* of the array grid
-		% ==========================================
-		\newcommand{\drawArrayRow}[4]{
-		    \begin{scope}[shift={(0,#4)}]
-			% Label "A:" at the left
-			\node[anchor=east] at (0, -\cellHeight/2) {#1};
-			
-			% Draw column indices above the array
-			\foreach \i in {0,...,#3} {
-			    \node[font=\footnotesize] at (\i*\cellWidth + \cellWidth/2, \indexGap) {\i};
-			}
-			
-			% 1. Fill the backgrounds for highlighted cells first
-			\foreach \val/\hl [count=\i from 0] in {#2} {
-			    \ifnum\hl=1
-				\fill[Green, opacity=0.1] (\i*\cellWidth, 0) rectangle ++(\cellWidth, -\cellHeight);
-			    \fi
-			}
-			
-			% 2. Draw the base black grid (prevents overlapping thick lines)
-			\draw[thick] (0, 0) grid[xstep=\cellWidth, ystep=\cellHeight] ++(#3*\cellWidth+\cellWidth, -\cellHeight);
-			
-			% 3. Redraw the green borders over the grid for highlighted cells
-			\foreach \val/\hl [count=\i from 0] in {#2} {
-			    \ifnum\hl=1
-				\draw[Green, thick] (\i*\cellWidth, 0) rectangle ++(\cellWidth, -\cellHeight);
-			    \fi
-			}
-			
-			% 4. Add the text nodes into the cells
-			\foreach \val/\hl [count=\i from 0] in {#2} {
-			    \ifnum\hl=1
-				\node[math node,text=Green] at (\i*\cellWidth + \cellWidth/2, -\cellHeight/2) {\val};
-			    \else
-				\node[math node,text=black] at (\i*\cellWidth + \cellWidth/2, -\cellHeight/2) {\val};
-			    \fi
-			}
-		    \end{scope}
-		}
-		
-		% ==========================================
-		% Macro 2: Draw a query arrow and text
-		% #1: query text (e.g., Apply Q1)
-		% #2: absolute y-coordinate to center the query block vertically
-		% ==========================================
-		\newcommand{\drawQueryBlock}[2]{
-		    \begin{scope}[shift={(0,#2)}]
-			 % Vertical arrow
-			 \draw[-Stealth, thick] (-0.3, 0.1) -- (-0.3, -0.65);
-			 % Query text to the right
-			 \node[anchor=north west, inner sep=0pt] at (0, 0) {#1};
-		    \end{scope}
-		}
-
-		\def\maxIndex{8} 
-
-		\drawArrayRow{$\Sigma\texttt{d}_1$:}{0/0, 1/0, 1/0, 1/0, 0/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{0}
-		
-		\drawArrayRow{$\Sigma\texttt{d}_2$:}{0/0, 0/0, 2/0, 2/0, 0/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{-\rowBlockGap}
-		
-		\drawArrayRow{$\Sigma\texttt{d}_3$:}{0/0, 0/0, 0/0, 0/0, 0/0, -1/0, -1/0, -1/0, -1/0}{\maxIndex}{-2*\rowBlockGap}
-
-		\drawQueryBlock{$+$}{-2.75*\rowBlockGap}
-
-		\drawArrayRow{$\Sigma\texttt{d}$:}{0/0, 1/0, 3/0, 3/0, 0/0, -1/0, -1/0, -1/0, -1/0}{\maxIndex}{-3.5*\rowBlockGap}
-
-	    \end{tikzpicture}
-	\end{column}
     \end{columns}
 \end{frame}
 
 \begin{frame}{One-dimensional difference arrays}
+    For an array of size \( N \) and \( L \) queries of arbitrary size
     \begin{columns}[T]
-	\begin{column}{0.5\textwidth}
-	    \textbf{Non-formal difference array algorithm:}
-
-	    Input: Array \texttt{A} of size \( N \) and \( L \) queries of size at most \( N \)
-	    \begin{enumerate}
-		\item Initialize array \texttt{d} of size \( N \) 
-		\item For every query add two markers to \texttt{d}
-		\item Form the cumulative sum \( \Sigma\texttt{d} \)
-		\item Add \( \Sigma\texttt{d} \) to \texttt{A}
-	    \end{enumerate}
-	\end{column}
-	\begin{column}{0.45\textwidth}
-	    \textbf{Runtime analysis:}
-
-	    \begin{itemize}
-		\item Initializing \texttt{d} in \( \mathcal{O}(N) \)
-		\item Per query placing two markers, i.e. in total \( \mathcal{O}(L) \) markers
-		\item Forming \( \Sigma\texttt{d} \) in \( \mathcal{O}(N) \) by computing 
-		    \begin{equation*}
-			\sum_{j=0}^i \texttt{d}[j] = \texttt{d}[i] + \sum_{j=0}^{i-1} \texttt{d}[j]
-		    \end{equation*}
-		    (\(N-2\) additions, \(N-1\) reads)
-		\item Adding \( \Sigma\texttt{d} \) to \texttt{A} in \( \mathcal{O}(N) \). 
-	    \end{itemize}
-	    In total: \( \mathcal{O}(N + L) \). 
-	\end{column}
+        \begin{column}<1->{0.48\textwidth}
+            \textbf{Naive algorithm:} 
+            \begin{enumerate}
+                \item For every query add its update value over the whole update range
+            \end{enumerate}
+            \vspace{.2cm}
+            Runtime: \uncover<2->{\( \mathcal{O}(L\cdot N) \)}
+        \end{column}
+        \begin{column}<3->{0.48\textwidth}
+            \textbf{Non-formal difference array algorithm:}
+            \begin{enumerate}
+                \item Initialize array \texttt{d} of size \( N \) with zero entries \uncover<4->{\textcolor{Green}{in \( \mathcal{O}(N) \)}} 
+                \item For every query add two markers to \texttt{d} \uncover<5->{\textcolor{Green}{in \( \mathcal{O}(L) \)}}
+                \item Form the cumulative sum \( \Sigma\texttt{d} \) \uncover<6->{\textcolor{Green}{in \( \mathcal{O}(N) \)}}
+                \item Add \( \Sigma\texttt{d} \) to \texttt{A} \uncover<7->{\textcolor{Green}{in \( \mathcal{O}(N) \)}}
+            \end{enumerate}
+            \vspace{.2cm}
+            Runtime: \uncover<8->{\( \mathcal{O}(L + N) \)} 
+        \end{column}
     \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{One-dimensional difference arrays}
+    Imagine placing the markers as forming separate difference arrays \( \texttt{d}_1, \dots, \texttt{d}_L \), that is 
+    \begin{equation*}
+        \texttt{d} = \sum_{i=1}^L \texttt{d}_i 
+    \end{equation*}
+
+    \vspace{.2cm}
+
+    The difference array algorithm works as the cumulative sum distributes over the markers of multiple queries: 
+    \begin{equation*}
+        \Sigma\texttt{d}[j] = \sum_{l=1}^j \texttt{d}[l] = \sum_{l=1}^j \sum_{i=1}^L \texttt{d}_i[l] = \sum_{i=1}^L \sum_{l=1}^j \texttt{d}_i[l] = \sum_{i=1}^L \Sigma \texttt{d}_i 
+    \end{equation*}
+
+    \vspace{.2cm}
+
+    The cumulative sum \( \Sigma\texttt{d} \) can be computed in \( \mathcal{O}(N) \) by reusing previous results: 
+    \begin{equation*}
+        \Sigma\texttt{d}[j] = \texttt{d}[j] + \sum_{i=1}^{j-1} \texttt{d}[i] = \texttt{d}[j] + \Sigma\texttt{d}[j-1]. 
+    \end{equation*}
 \end{frame}
 
 \begin{frame}{Two-dimensional difference arrays}
@@ -795,7 +577,7 @@
 \end{frame}
 
 \begin{frame}{\(d\)-dimensional difference arrays?}
-    \begin{itemize}
+    \begin{itemize}[<+->]
 	\item This heuristic can easily be extended to \( d \)-dimensional arrays by placing \( 2^d \) markers for every query. 
 
 	\item However for dimensions \( d \geq 4 \) this is hard to conceptially verify. 
@@ -812,48 +594,43 @@
 \begin{frame}{The formal framework}
     We view arrays as maps over \emph{finite grid domains}. 
 
-    \begin{definition*}{}
-	A finite subset \( D \subseteq \mathbb{Z}^d \) is called \emph{finite grid domain} if there exist \( n_1,\dots,n_d \in \mathbb{Z} \) and \( m_1, \dots, m_d \in \mathbb{Z} \) with \( n_i \leq m_i \) for all \( i \in \{1, \dots, d\} \) such that \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \).
-	A \emph{discrete map} is a map \( f : D \to \mathbb{R} \) over a finite grid domain \( D \subseteq \mathbb{Z}^d \). 
-
-	A \emph{\(d\)-dimensional array} is a discrete function \( f : D \to \mathbb R \) for which the finite grid domain \( D \) is of the form \( D = \prod_{i=1}^d \llbracket 0, m_i \rrbracket \subseteq \mathbb Z^d \) where \( m_i \in \mathbb N \) for all \( 1 \leq i \leq d \).  
+    \begin{definition*}{discrete maps, arrays}
+        \begin{itemize}[<+->]
+            \item For \( a \leq b \in \mathbb{Z} \) define the \emph{discrete interval} \( \llbracket a, b \rrbracket := \{ m \in \mathbb{Z} \mid a \leq m \leq b \} \)
+            \item A \emph{finite grid domain} is a subset \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb{Z}^d \)
+            \item A \emph{discrete map} is a map \( f : D \to \mathbb{R} \) over a finite grid domain \( D \subseteq \mathbb{Z}^d \) 
+            \item A \emph{\(d\)-dimensional array} is a discrete map \( f : \prod_{i=1}^d \llbracket 0, m_i \rrbracket \to \mathbb{R} \)
+        \end{itemize}
     \end{definition*}
 
-    The notation \( \llbracket a, b \rrbracket \) for \( a\leq b \in \mathbb{Z} \) means the \emph{discrete interval}
-    \begin{equation*}
-	\llbracket a, b \rrbracket := \{ m \in \mathbb{Z} \mid a \leq m \leq b \}. 
-    \end{equation*}
 \end{frame}
 
 \begin{frame}
-    \begin{definition*}{}
-	Let \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb{Z}^d \) be a finite grid domain. 
-	A \emph{constant update query} \( q \) on \( D \) is a discrete function \( q : D \to \mathbb R \) such that there exists a subset \( D_q = \prod_{i=1}^d \llbracket a_i, b_i \rrbracket \subseteq D \) called the \emph{update range} of \( q \) and a constant \( C \in \mathbb R \) called the \emph{update value} of \( q \) with 
-	\begin{equation*}
-	    q(k_1, \dots, k_d) := \begin{cases}
-		C, & \text{if } (k_1,\dots,k_d) \in D_q, \\
-		0, & \text{else}
-	    \end{cases}
-	\end{equation*}
-	for \( (k_1,\dots,k_d) \in D \), that is \( q = C \cdot \mathbb{1}_{D_q} \). 
-	The \emph{size} of a constant update query \( q : D \to \mathbb R \) is the cardinality of the update range \( D_q \). 
+    \begin{definition*}{constant update queries}
+        \begin{itemize}[<+->]
+            \item A discrete map \( q : D \to \mathbb{R} \) which is \emph{constant} on a subset \( D_q = \prod_{i=1}^d \llbracket a_i, b_i \rrbracket \subseteq D \) is called \emph{constant update query}
+            \item In other words, \( q = C \cdot \mathbb{1}_{D_q} \) with \( C \in \mathbb{R} \) (the \emph{update value} of \( q \))
+            \item \( |D_q| \) is the \emph{size} of \( q \) 
+        \end{itemize}
     \end{definition*}
-\end{frame}
 
-\begin{frame}
+    \vspace{.2cm}
+
     Let \( f : D \to \mathbb R \) with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \) be a discrete function and \( q_1, \dots, q_L \) a series of constant update queries. 
 
     \vspace{.3cm}
 
+    \uncover<4->{
     \emph{Applying the series of queries to \( f \)} means forming the updated discrete function \( F : D \to \mathbb R \) as 
     \begin{equation*}
 	F := f + \sum_{i=1}^L q_i.
     \end{equation*}
+    }
 \end{frame}
 
-\begin{frame}{A naive algorithm}
+\begin{frame}[fragile]{A naive algorithm}
     \begin{algorithmic}[1]
-	\Statex\hspace{-2em} \textbf{Input:} A discrete map \( f : D \to \mathbb R \) with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \) and a series of constant update queries \( q_1, \dots, q_L \) on \( f \) over the update ranges \( D_j = \prod_{i=1}^d \llbracket a_i^{(j)}, b_i^{(j)} \rrbracket \) with update values \( C_j \) for \( 1 \leq j \leq L \)
+	\Statex\hspace{-2em} \textbf{Input:} A discrete map \( f : D \to \mathbb R \) with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \) and a series of constant update queries \( q_1, \dots, q_L \) on \( f \) over the update ranges \( D_j = \prod_{i=1}^d \left\llbracket a_i^{(j)}, b_i^{(j)} \right\rrbracket \) with update values \( C_j \) for \( 1 \leq j \leq L \)
 
 	\Statex\hspace{-2em} \textbf{Output:} The updated function \( F = f + \sum_{i=1}^L q_i \)
 
@@ -870,93 +647,24 @@
 
 	\Return \( F \)
     \end{algorithmic}
-\end{frame}
 
-\begin{frame}
-    \vspace{.5cm}
-    \begin{tikzpicture}
-	\draw[help lines, color=gray!30, step=1cm] (0,0) grid (12, 7);
-
-	% 2. Draw Axes
-	\draw[->, thick] (-0.15, 0) -- (12, 0); % X-axis
-	\draw[->, thick] (0, -0.15) -- (0, 7);  % Y-axis
-
-	% 3. Draw Axis Ticks and Labels
-	% X-axis ticks (at integer coordinates)
-	\draw[thick] (2, -0.1) -- (2, 0.1) node[below=5pt] {$a_1^{(1)}$};
-	\draw[thick] (6, -0.1) -- (6, 0.1) node[below=5pt] {$b_1^{(1)}$};
-
-	\draw[thick] (4, -0.1) -- (4, 0.1) node[below=5pt] {$a_1^{(2)}$};
-	\draw[thick] (7, -0.1) -- (7, 0.1) node[below=5pt] {$b_1^{(2)}$};
-
-	\draw[thick] (9, -0.1) -- (9, 0.1) node[below=5pt] {$a_1^{(3)}$};
-	\draw[thick] (10, -0.1) -- (10, 0.1) node[below=5pt] {$b_1^{(3)}$};
-
-	% Y-axis ticks (at integer coordinates)
-	\draw[thick] (-0.1, 3) -- (0.1, 3) node[left=5pt] {$a_2^{(1)}$};
-	\draw[thick] (-0.1, 5) -- (0.1, 5) node[left=5pt] {$b_2^{(1)}$};
-
-	\draw[thick] (-0.1, 2) -- (0.1, 2) node[left=5pt] {$a_2^{(2)}$};
-	\draw[thick] (-0.1, 4) -- (0.1, 4) node[left=5pt] {$b_2^{(2)}$};
-
-	% 4. Draw Rectangles (Edges exactly between grid points)
-	% y-span is from 1.5 to 6.5
-	\fill[gray, opacity=0.2] (2-0.5, 3-0.5) rectangle (6+0.5, 6-0.5);  % q1 bounding box
-	\fill[gray, opacity=0.3] (4-0.5, 2-0.5) rectangle (7+0.5, 5-0.5);  % q1 bounding box
-	\fill[gray, opacity=0.4] (9-0.5, 3-0.5) rectangle (10+0.5, 6-0.5);  % q1 bounding box
-
-	% 5. Add Rectangle Area Labels
-	\node at (2.5, 2) {$q_1$};
-	\node at (5.5, 1) {$q_2$};
-	\node at (9.5, 2) {$q_3$};
-	
-	% q1 updates
-	\node[anchor=center, inner sep=2pt] at (2,3) {$+C_1$};
-	\node[anchor=center, inner sep=2pt] at (2,4) {$+C_1$};
-	\node[anchor=center, inner sep=2pt] at (2,5) {$+C_1$};
-	\node[anchor=center, inner sep=2pt] at (3,3) {$+C_1$};
-	\node[anchor=center, inner sep=2pt] at (3,4) {$+C_1$};
-	\node[anchor=center, inner sep=2pt] at (3,5) {$+C_1$};
-	\node[anchor=center, inner sep=2pt] at (4,5) {$+C_1$};
-	\node[anchor=center, inner sep=2pt] at (5,5) {$+C_1$};
-	\node[anchor=center, inner sep=2pt] at (6,5) {$+C_1$};
-
-	% q2 updates
-	\node[anchor=center, inner sep=2pt] at (4,2) {$+C_2$};
-	\node[anchor=center, inner sep=2pt] at (5,2) {$+C_2$};
-	\node[anchor=center, inner sep=2pt] at (6,2) {$+C_2$};
-	\node[anchor=center, inner sep=2pt] at (7,2) {$+C_2$};
-	\node[anchor=center, inner sep=2pt] at (7,3) {$+C_2$};
-	\node[anchor=center, inner sep=2pt] at (7,4) {$+C_2$};
-
-	% q1/q2 overlap
-	\node[anchor=center, align=left, inner sep=2pt] at (4,3) {$+C_1$\\[-0.5ex]$+C_2$};
-	\node[anchor=center, align=left, inner sep=2pt] at (5,3) {$+C_1$\\[-0.5ex]$+C_2$};
-	\node[anchor=center, align=left, inner sep=2pt] at (6,3) {$+C_1$\\[-0.5ex]$+C_2$};
-	\node[anchor=center, align=left, inner sep=2pt] at (4,4) {$+C_1$\\[-0.5ex]$+C_2$};
-	\node[anchor=center, align=left, inner sep=2pt] at (5,4) {$+C_1$\\[-0.5ex]$+C_2$};
-	\node[anchor=center, align=left, inner sep=2pt] at (6,4) {$+C_1$\\[-0.5ex]$+C_2$};
-
-	% q3 updates
-	\node[anchor=center, inner sep=2pt] at (9,3) {$+C_3$};
-	\node[anchor=center, inner sep=2pt] at (9,4) {$+C_3$};
-	\node[anchor=center, inner sep=2pt] at (9,5) {$+C_3$};
-	\node[anchor=center, inner sep=2pt] at (10,3) {$+C_3$};
-	\node[anchor=center, inner sep=2pt] at (10,4) {$+C_3$};
-	\node[anchor=center, inner sep=2pt] at (10,5) {$+C_3$};
+    \uncover<2->{
+    \begin{tikzpicture}[remember picture, overlay]
+        \node [
+            anchor=south east,           % Anchor point of the text block
+            xshift=-0.5cm,               % Distance from the right edge (negative is left)
+            yshift=0.5cm,                % Distance from the bottom edge (positive is up)
+            text width=6.0cm,
+            minimum height=1.5cm,
+            align=justify,
+            fill=BackgroundBlue
+        ] at (current page.south east) {
+            \textcolor{ScreenshotBlue}{\textbf{Runtime:}} With \( N := \card(D) \), \\
+            Non-situ: \( \mathcal{O}(N + L\cdot N) = \mathcal{O}(L \cdot N) \) \\
+            In-situ: \( \mathcal{O}(L \cdot N) \) 
+        };
     \end{tikzpicture}
-\end{frame}
-
-\begin{frame}
-    \begin{proposition*}{}
-	Let \( f : D \subseteq \mathbb{Z}^d \to \mathbb{R} \) be a discrete function with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \) and \( N = \card(D) \), and let \( q_1, \dots, q_Q \) be a series of \( L \) constant update queries on \( f \) each of size at most \( M \). 
-
-	\begin{itemize}
-	    \item Assuming that for each \( k \in D \) the function value \( f(k) \) can be obtained in constant time, the naive algorithm computes the updated function \( F = f + \sum_{i=1}^Q q_i \) in \( \mathcal{O}(N + LM) \). 
-
-	    \item If the algorithm can be implemented in situ, its runtime lies in \( \mathcal{O}(LM) \). 
-	\end{itemize}
-    \end{proposition*}
+    }
 \end{frame}
 
 \begin{frame}
@@ -1231,35 +939,38 @@
 \end{frame}
 
 \begin{frame}
-    \begin{definition*}{}
-	Let \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb{Z}^d \) be a finite grid domain and \( q_1, \dots, q_L \) a series of constant update queries on \( D \) over the update ranges \( D_j = \prod_{i=1}^d \llbracket a_i^{(j)}, b_i^{(j)} \rrbracket \) with update values \( C_j \) for \( j \in \{1,\dots,L\} \).
-
-	The \emph{difference array} \( \Delta[q_1,\dots,q_L] : D \to \mathbb{R} \) is defined as
-	\begin{equation*}
-	    \Delta[q_1,\dots,q_L] = \sum_{j=1}^L \sum_{p \in M_j} (-1)^{N_j(p)} \cdot C_j \cdot \delta_p,
-	\end{equation*}
-	where \( M_j = \prod_{i=1}^d \left( \left\{a_i^{(j)}\right\} \cup \left\{ b_i^{(j)} + 1 \mid b_i^{(j)} \neq m_i \right\} \right) \) and \( N_j(p) = \card\{ p_i \mid p_i = b_i^{(j)}+1 \} \) for \( j \in \{1,\dots,L\} \).
+    \begin{definition*}{difference arrays}
+        Let 
+        \begin{itemize}[<+->]
+            \item \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb{Z}^d \) be a finite grid domain,
+            \item \( q_1, \dots, q_L \) be a series of constant update queries on \( D \) over the update ranges \( D_j = \prod_{i=1}^d \big\llbracket a_i^{(j)}, b_i^{(j)} \big\rrbracket \) with update values \( C_j \) for \( j \in \{1,\dots,L\} \),
+            \item \( M_j := \prod_{i=1}^d \left( \left\{a_i^{(j)}\right\} \cup \left\{ b_i^{(j)} + 1 \mid b_i^{(j)} \neq m_i \right\} \right) \) for \( j \in \{1,\dots,L\} \).
+        \end{itemize}
+        \uncover<4->{
+            The \emph{difference array} \( \Delta[q_1,\dots,q_L] : D \to \mathbb{R} \) is defined as
+            \begin{equation*}
+                \Delta[q_1,\dots,q_L] = \sum_{j=1}^L \sum_{p \in M_j} (-1)^{N_j(p)} \cdot C_j \cdot \delta_p,
+            \end{equation*}
+            where \( N_j(p) = \card\{ p_i \mid p_i = b_i^{(j)}+1 \} \) for \( j \in \{1,\dots,L\} \).
+        }
     \end{definition*}
 
-    The notation \( \delta_p \) means the Dirac-delta given by 
-    \begin{equation*}
-	\delta_p(k) = \begin{cases} 1, & \text{if } k = p, \\ 0, & \text{else.} \end{cases}
-    \end{equation*}
+    The notation \( \delta_p \) means the Kronecker-delta.
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile] 
     \begin{algorithmic}[1]
-	\Statex\hspace{-2em} \textbf{Procedure:} \( \textsc{DiffArr}(D,q_1,\dots,q_Q) \)
+	\Statex\hspace{-2em} \textbf{Procedure:} \( \textsc{DiffArr}(D,q_1,\dots,q_L) \)
 
-	\Statex\hspace{-2em} \textbf{Input:} A finite grid domain \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb{Z}^d \) and a series of constant update queries \( q_1, \dots, q_Q \) on \( D \) over the update ranges \( D_j = \prod_{i=1}^d \llbracket a_i^{(j)}, b_i^{(j)} \rrbracket \) with update values \( C_j \) for \( 1 \leq j \leq Q \)
+	\Statex\hspace{-2em} \textbf{Input:} A finite grid domain \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb{Z}^d \) and a series of constant update queries \( q_1, \dots, q_L \) on \( D \) over the update ranges \( D_j = \prod_{i=1}^d \llbracket a_i^{(j)}, b_i^{(j)} \rrbracket \) with update values \( C_j \) for \( 1 \leq j \leq L \)
 
-	\Statex\hspace{-2em} \textbf{Output:} The difference array \( \Delta[q_1,\dots,q_Q] \)
+	\Statex\hspace{-2em} \textbf{Output:} The difference array \( \Delta[q_1,\dots,q_L] \)
 
 	\Statex
 
 	\State \( d \gets \) Zero map \( d : D \to \mathbb{R} \) \hspace{2em}
 
-	\For{ \( j \in \llbracket 1, Q \rrbracket \) }
+    \For{ \( j \in \{ 1, \dots, L \} \) }
 	    \State \( M_j \gets \prod_{i=1}^d \left( \left\{a_i^{(j)}\right\} \cup \left\{ b_i^{(j)} + 1 \mid b_i^{(j)} \neq m_i \right\} \right) \)
 
 	    \For{ \( p \in M_j \) }
@@ -1270,19 +981,32 @@
 
 	\State \Return \( d \)
     \end{algorithmic}
+
+    \uncover<2->{
+    \begin{tikzpicture}[remember picture, overlay]
+        \node [
+            anchor=south east,           % Anchor point of the text block
+            xshift=-0.5cm,               % Distance from the right edge (negative is left)
+            yshift=0.5cm,                % Distance from the bottom edge (positive is up)
+            text width=6.0cm,
+            minimum height=1.5cm,
+            align=justify,
+            fill=BackgroundBlue
+        ] at (current page.south east) {
+            \textcolor{ScreenshotBlue}{\textbf{Runtime:}}
+            The runtime of the body of the outer for-loop is \emph{constant}! \\
+            \( \implies \)Total runtime: \( \mathcal{O}(N+L) \) with \( N := \card(D) \)
+        };
+    \end{tikzpicture}
+    }
 \end{frame}
 
-\begin{frame}
-    \begin{proposition*}{}
-	Let \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq{Z}^d \) be a finite grid domain, \( N = \card(D) \) and let \( q_1, \dots, q_L \) be a series of constant update queries on \( D \) of arbitrary size. 
-	The difference array algorithm computes the difference array \( \Delta[q_1,\dots,q_Q] \) in \( \mathcal{O}(N + L) \). 
-    \end{proposition*}
-
-    How does this formal notion of a difference array help us in computing the updated map \( F = f + \sum_{i=0}^L q_i \) more efficiently? 
+\begin{frame}{Towards Discrete Calculus}
+    How does this formal notion of a difference array help us in computing the updated map \( F = f + \sum_{i=1}^L q_i \) more efficiently? 
 
     \vspace{.2cm}
 
-    From the 1D/2D heuristic: Cumulatively summing over \( \Delta[q_1,\dots,q_L] \) should yield the total update \( \sum_{i=0}^L q_i \). 
+    From the 1D/2D heuristic: Cumulatively summing over \( \Delta[q_1,\dots,q_L] \) should yield the total update \( \sum_{i=1}^L q_i \). 
 \end{frame}
 
 \begin{frame}{Roadmap: How does Discrete Calculus come into play?}
@@ -1300,7 +1024,7 @@
 
 \begin{frame}{Foundations of Discrete Calculus}
     \begin{definition*}{}
-	The \emph{\( i \)-th backward difference} \( \Delta_i \) is the linear operator assigning to every discrete function \( f : D \subseteq \mathbb Z^d \to \mathbb R \) with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb Z^d \) the function \( \Delta_i f: D \to \mathbb R \) given by 
+	The \emph{\( i \)-th backward difference} \( \Delta_i \) is the linear operator assigning to every discrete map \( f : D \subseteq \mathbb Z^d \to \mathbb R \) with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb Z^d \) the map \( \Delta_i f: D \to \mathbb R \) given by 
 	\begin{align*}
 	    \Delta_i f(k_1, \dots, k_d) &:= f(k_1, \dots, k_{i-1}, k_i, k_{i+1}, \dots, k_d) \\
 					& \quad\qquad - f(k_1, \dots, k_{i-1}, k_i-1, k_{i+1}, \dots, k_d)
@@ -1325,7 +1049,7 @@
 
 \begin{frame}
     \begin{definition*}{}
-	The \emph{\( i \)-th (inclusive) prefix sum} \( \Sigma_i \) is the linear operator assigning to every discrete function \( f: D \subseteq \mathbb Z^d \to \mathbb R \) with \( D = \prod_{j=1}^d \llbracket n_i, m_i \rrbracket \) the function \( \Sigma_i f : D \to \mathbb R \) given by 
+	The \emph{\( i \)-th prefix sum} \( \Sigma_i \) is the linear operator assigning to every discrete function \( f: D \subseteq \mathbb Z^d \to \mathbb R \) with \( D = \prod_{j=1}^d \llbracket n_i, m_i \rrbracket \) the function \( \Sigma_i f : D \to \mathbb R \) given by 
 	\begin{equation*}
 	    \Sigma_i f(k_1, \dots, k_d) := \sum_{t = n_i}^{k_i} f(k_1, \dots, k_{i-1}, t, k_{i+1}, \dots, k_d)
 	\end{equation*}
@@ -1334,58 +1058,96 @@
 	\begin{equation*}
 	    \Sigma := \Sigma_1 \circ \cdots \circ \Sigma_d
 	\end{equation*}
-	to denote the \emph{(inclusive) prefix sum} \( \Sigma \).
+	to denote the \emph{mixed prefix sum} \( \Sigma \).
     \end{definition*}
 \end{frame}
 
-\begin{frame}
-    It is not hard to show that backward differences and prefix sums commute, that is for every \( i \) and \( j \) we have \( \Sigma_i \circ \Delta_j = \Delta_j \circ \Sigma_i \). 
-
-    \vspace{.4cm}
-
-    In particular, \( \Sigma \circ \Delta = (\Sigma_1 \circ \Delta_1) \circ \cdots \circ (\Sigma_d \circ \Delta_d) =  \Delta \circ \Sigma \). 
-
-    \begin{proposition*}{}
-	The \( i \)-th backward difference \( \Delta_i \) and the \( i \)-th prefix sum \( \Sigma_i \) are inverse to each other for all \( i \). 
-	That is, for every discrete function \( f : D \to \mathbb R \) with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb Z^d \) we have
-	\begin{equation*}
-	    \Delta_i \circ \Sigma_i (f) = f \quad \text{and} \quad \Sigma_i \circ \Delta_i (f) = f
-	\end{equation*}
-	for all \( i \in \{1,\dots,d\} \). 
-	In particular, the mixed backward difference \( \Delta = \Delta_1 \circ \cdots \circ \Delta_d \) and the prefix sum \( \Sigma = \Sigma_1 \circ \cdots \circ \Sigma_d \) are inverse to each other. 
-    \end{proposition*}
-
-    Another important property of prefix sums is that they can be computed efficiently.
+\begin{frame}{Properties of backward differences and prefix sums}
+    \begin{itemize}[<+->]
+        \item It is not hard to show that backward differences and prefix sums commute, that is for every \( i \) and \( j \) we have 
+            \begin{equation*}
+                \Sigma_i \circ \Delta_j = \Delta_j \circ \Sigma_i.
+            \end{equation*}
+        \item In particular, \( \Sigma \circ \Delta = (\Sigma_1 \circ \Delta_1) \circ \cdots \circ (\Sigma_d \circ \Delta_d) =  \Delta \circ \Sigma \). 
+        \item The \( i \)-th backward difference \( \Delta_i \) and the \( i \)-th prefix sum \( \Sigma_i \) are inverse to each other for all \( i \), that is for every discrete map \( f \) we have 
+            \begin{equation*}
+                \Delta_i \circ \Sigma_i(f) = f. 
+            \end{equation*}
+        \item Prefix sums can be computed efficiently: 
+            \begin{align*}
+                &\Sigma_i(f)(k_1,\dots,k_d) \\
+                &\quad = f(k_1,\dots,k_{i-1},k_i,k_{i+1},\dots,k_d) + \sum_{t=n_i}^{k_i-1} f(k_1,\dots,k_{i-1},t,k_{i+1},\dots,k_d) \\
+                &\quad = f(k_1,\dots,k_{i-1},k_i,k_{i+1},\dots,k_d) + \Sigma_i(f)(k_1,\dots,k_{i-1},k_i-1,k_{i+1},\dots,k_d). 
+            \end{align*}
+    \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
     \begin{algorithmic}[1]
-	\Statex\hspace{-2em} \textbf{Procedure:} \textsc{PrefixSum}
-	\Statex\hspace{-2em} \textbf{Input:} A discrete map \( f : D \to \mathbb R \) with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb{Z}^d \)
-
-	\Statex\hspace{-2em} \textbf{Output:} The prefix sum \( \Sigma(f) : D \to \mathbb{R} \)
+	\Statex\hspace{-2em} \textbf{Procedure:} \( \textsc{PrefixSum}(f,j) \)
+	\Statex\hspace{-2em} \textbf{Input:} A discrete map \( f : D \to \mathbb R \) with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb{Z}^d \) and an index \( j \in \{1,\dots,d\} \). 
+	\Statex\hspace{-2em} \textbf{Output:} The \(j\)-th prefix sum \( \Sigma_j(f) : D \to \mathbb{R} \)
 
 	\Statex 
 
 	\State \( S \gets \) The discrete map \( f : D \to \mathbb{R} \) \hspace{2em}
-
-	\For{ \( j \in \llbracket 1, d \rrbracket \) }
-    \For{ \( (k_1,\dots,k_{j-1}, k_{j+1}, \dots, k_d) \in \prod_{\substack{i=1\\i\neq j}}^d \llbracket n_i, m_i \rrbracket \) }
-		\For{ \( t \in \llbracket n_j+1, m_j \rrbracket \) }
-			\State \( S(k_1,\dots,k_{j-1}, t, k_{j+1}, \dots,k_d) \gets S(k_1, \dots, k_{j-1}, t-1, k_{j+1}, \dots, k_d) \) \\ \( \phantom{S(k_1,\dots,k_{j-1}, t, k_{j+1}, \dots,k_d) \gets} + S(k_1,\dots,k_{j-1},t,k_{j+1},\dots,k_d) \)
-		\EndFor
+	\For{ \( (k_1,\dots,k_{j-1}, k_{j+1}, \dots, k_d) \in \prod_{\substack{i=1\\i\neq j}}^d \llbracket n_i, m_i \rrbracket \) }
+	    \For{ \( t \in \llbracket n_j+1, m_j \rrbracket \) }
+		    \State \( S(k_1,\dots,k_{j-1}, t, k_{j+1}, \dots,k_d) \gets S(k_1, \dots, k_{j-1}, t-1, k_{j+1}, \dots, k_d) \) \\ \( \phantom{S(k_1,\dots,k_{j-1}, t, k_{j+1}, \dots,k_d) \gets} + S(k_1,\dots,k_{j-1},t,k_{j+1},\dots,k_d) \)
 	    \EndFor
 	\EndFor
 
 	\State \Return \( S \)
     \end{algorithmic}
+
+    \begin{tikzpicture}[remember picture, overlay]
+        \node [
+            anchor=south east,           % Anchor point of the text block
+            xshift=-0.5cm,               % Distance from the right edge (negative is left)
+            yshift=0.5cm,                % Distance from the bottom edge (positive is up)
+            text width=9.0cm,
+            minimum height=1.5cm,
+            align=justify,
+            fill=BackgroundBlue
+        ] at (current page.south east) {
+            \textcolor{ScreenshotBlue}{\textbf{Runtime:}} 
+            The runtime of the outer for-loop lies in \( \mathcal{O}\left( \left|\prod_{\substack{i=1\\i\neq j}}^d \llbracket n_i, m_i \rrbracket\right| \cdot \left|\llbracket n_j+1,m_j \rrbracket\right| \right) = \mathcal{O}(|D|) \) \\
+            \( \implies \)Total runtime: \( \mathcal{O}(N) \) with \( N = \card(D) \). 
+        };
+    \end{tikzpicture}
 \end{frame}
 
-\begin{frame}
-    \begin{proposition*}{}
-	Let \( f : D \to \mathbb R \) be a discrete map with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb{Z}^d \).
-	The \mbox{\textsc{PrefixSum}} algorithm computes the prefix sum \( \Sigma f : D \to \mathbb{R} \) in \( \mathcal{O}(N) \) with \( N = \card(D) \). 
-    \end{proposition*}
+\begin{frame}[fragile]
+    \begin{algorithmic}[1]
+	\Statex\hspace{-2em} \textbf{Procedure:} \( \textsc{MixedPrefixSum}(f) \)
+	\Statex\hspace{-2em} \textbf{Input:} A discrete map \( f : D \to \mathbb R \) with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb{Z}^d \)
+
+	\Statex\hspace{-2em} \textbf{Output:} The mixed prefix sum \( \Sigma(f) : D \to \mathbb{R} \)
+
+	\Statex 
+
+	\State \( S \gets \) The discrete map \( f : D \to \mathbb{R} \) 
+
+	\For{ \( j \in \{ 1, \dots, d\} \) }
+	    \State \( S \gets \Call{PrefixSum}{S,j} \)
+	\EndFor
+
+	\State \Return \( S \)
+    \end{algorithmic}
+
+    \begin{tikzpicture}[remember picture, overlay]
+        \node [
+            anchor=south west,           % Anchor point of the text block
+            xshift=0.5cm,               % Distance from the right edge (negative is left)
+            yshift=0.5cm,                % Distance from the bottom edge (positive is up)
+            text width=6.0cm,
+            minimum height=0.5cm,
+            align=justify,
+            fill=BackgroundBlue
+        ] at (current page.south west) {
+            \textcolor{ScreenshotBlue}{\textbf{Runtime:}} \( \mathcal{O}(N) \)
+        };
+    \end{tikzpicture}
 \end{frame}
 
 \begin{frame}{Indicator functions and Heaviside step functions}
@@ -1416,7 +1178,7 @@
 	\end{equation*}
     \end{proposition*}
     \begin{proof}
-	\begin{itemize}
+    \begin{itemize}[<+->]
 	    \item It is straight forward to see that \( H_p = \prod_{i=1}^d H_{p_i} \)
 	    \item One can show that for such products we have \( \Delta H_p = \prod_{i=1}^d \Delta H_{p_i} \)
 	    \item Show \( \Delta H_{p_i} = \delta_{p_i} \) by a simple case distinction
@@ -1435,7 +1197,7 @@
 	where \( N(p) = \card\{ p_i \mid p_i = b_i+1 \} \). 
     \end{proposition*}
     \begin{proof}
-	\begin{itemize}
+    \begin{itemize}[<+->] 
 	    \item It is not hard to see that \( \mathbb{1}_D(k_1,\dots,k_d) = \prod_{i=1}^d \mathbb{1}_{\llbracket a_i, b_i \rrbracket}(k_i) \)
 	\item By a simple case distiction we see that \( \mathbb{1}_{\llbracket a_i, b_i \rrbracket}(k_i) = H_{a_i}(k_i) - H_{b_i+1}(k_i) \) 
 	    \item Hence, \( \mathbb{1}_D(k_1,\dots,k_d) = \prod_{i=1}^d \left( H_{a_i}(k_i) - H_{b_i+1}(k_i) \right) \)
@@ -1443,8 +1205,32 @@
 		    \begin{align*}
 			\prod_{i=1}^d \left( H_{a_i}(k_i) - H_{b_i+1}(k_i) \right) = \sum_{J \subseteq I} (-1)^{\card(J)} \Bigg( \prod_{i \in I \setminus J} H_{a_i}(k_i) \Bigg) \Bigg( \prod_{j \in J} H_{b_j+1}(k_j) \Bigg),
 		    \end{align*}
-		    where \( I = \{1,\dots,d\} \). \qedhere
+		    where \( I = \{1,\dots,d\} \). \global\qedplacedtrue
 	\end{itemize}
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \begin{proof}[Proof (continued)]
+        \begin{itemize}[<+->]
+            \item Then for every \( J \subseteq I \) we have 
+                \begin{equation*}
+                    \Bigg( \prod_{i \in I \setminus J} H_{a_i}(k_i) \Bigg) \Bigg( \prod_{j \in J} H_{b_j+1}(k_j) \Bigg) = H_p(k_1,\dots,k_d)
+                \end{equation*}
+                with \( p = (p_1,\dots,p_d) \) given by 
+                \begin{equation*}
+                    p_i = \begin{cases}
+                        a_i, &\text{if } i \in I \setminus J, \\
+                        b_i+1, &\text{if } i \in J. 
+                    \end{cases}
+                \end{equation*}
+            \item These are exactly the points in \( \prod_{i=1}^d \{ a_i, b_i+1\} \), hence it is not hard to verify that indeed 
+                \begin{align*}
+                    &\sum_{J \subseteq I} (-1)^{\card(J)} \Bigg( \prod_{i \in I \setminus J} H_{a_i}(k_i) \Bigg) \Bigg( \prod_{j \in J} H_{b_j+1}(k_j) \Bigg) \\
+                    &\qquad= \sum_{p \in \prod_{i=1}^d \{a_i,b_i+1\}} (-1)^{N(p)} H_p(k_1,\dots,k_d)
+                \end{align*}
+                with \( N(p) = \card\{ p_i \mid p_i = b_i+1 \} \). \qedhere 
+        \end{itemize}
     \end{proof}
 \end{frame}
 
@@ -1462,28 +1248,52 @@
 	\end{equation*}
     \end{corollary*}
     \begin{proof}
-	\begin{itemize}
+    \begin{itemize}[<+->] 
 	    \item By definition \( q = C \cdot \mathbb{1}_{D_q} \) 
 
-	    \item Writing the indicator function by Heaviside step functions yields the first claim
-
-	    \item The second claim follows by the linearity of \( \Delta \) and as previously shown \( \Delta H_p = \delta_p \)  \qedhere
+        \item By the previous proposition: 
+            \begin{equation*}
+                q = \sum_{p \in \prod_{i=1}^d \{a_i,b_i+1\}} (-1)^{N(p)} \cdot C \cdot H_p.
+            \end{equation*}
 	\end{itemize}
+    \global\qedplacedtrue
     \end{proof}
 \end{frame}
 
 \begin{frame}
+    \begin{proof}[Proof (continued)]
+        \begin{itemize}[<+->] 
+            \item We are not viewing \( q \) as a function over \( \mathbb{Z}^d \) but over \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb{Z}^d \)
+            \item If \( p \in \prod_{i=1}^d \{a_i,b_i+1\} \) with \( p_j = b_j+1 \) and \( b_j = m_j \), then \( p \notin D \)
+            \item In this case, \( H_p(k) = 0 \) for all \( k \in D \) 
+            \item Hence, the only points \( p \in \prod_{i=1}^d \{a_i,b_i+1\} \) that matter are those with \( p_j \neq b_j+1 \) if \( b_j = m_j \), that is the points in 
+                \begin{equation*}
+                    M = \prod_{i=1}^d \left( \left\{a_i\right\} \cup \left\{ b_i + 1 \mid b_i \neq m_i \right\} \right)
+                \end{equation*}
+            \item Therefore, 
+                \begin{equation*}
+                    q = \sum_{p \in M} (-1)^{N(p)} \cdot C \cdot H_p. 
+                \end{equation*}
+            \item Lastly, the form of \( \Delta q \) follows directly by the linearity of the mixed backward difference \( \Delta \) and \( \Delta H_p = \delta_p \). \qedhere
+        \end{itemize}
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \uncover<1->{
     Recall the formal definition of difference arrays: 
 
     \begin{definition*}{}
 	    Let \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb{Z}^d \) be a finite grid domain and \( q_1, \dots, q_L \) a series of constant update queries on \( D \). 
-	    The \emph{difference array} \( \Delta[q_1,\dots,q_Q] : D \to \mathbb{R} \) is defined as
+	    The \emph{difference array} \( \Delta[q_1,\dots,q_L] : D \to \mathbb{R} \) is defined as
 	\begin{equation*}
 	    \Delta[q_1,\dots,q_L] = \sum_{j=1}^L \sum_{p \in M_j} (-1)^{N_j(p)} \cdot C_j \cdot \delta_p,
 	\end{equation*}
-	where \( M_j = \prod_{i=1}^d \left( \left\{a_i^{(j)}\right\} \cup \left\{ b_i^{(j)} + 1 \mid b_i^{(j)} \neq m_i \right\} \right) \) and \( N_j(p) = \card\{ p_i \mid p_i = b_i^{(j)}+1 \} \) for \( 1 \leq j \leq Q \).
+	where \( M_j = \prod_{i=1}^d \left( \left\{a_i^{(j)}\right\} \cup \left\{ b_i^{(j)} + 1 \mid b_i^{(j)} \neq m_i \right\} \right) \) and \( N_j(p) = \card\{ p_i \mid p_i = b_i^{(j)}+1 \} \) for \( 1 \leq j \leq L \).
     \end{definition*}
+    }
 
+    \uncover<2->{
     \begin{itemize}
 	\item With the corollary on the last slide we see that 
 	    \begin{equation*}
@@ -1491,10 +1301,11 @@
 	    \end{equation*}
 	    for all \( j \in \{1,\dots,L\} \). 
     \end{itemize}
+    }
 \end{frame}
 
 \begin{frame}
-    \begin{itemize}
+    \begin{itemize}[<+->]
 	\item Hence, we indeed have 
 	\begin{equation*}
 	    \Delta[q_1,\dots,q_L] = \sum_{j=1}^L \Delta q_j. 
@@ -1504,17 +1315,17 @@
 	    \Sigma(\Delta[q_1,\dots,q_L]) = \sum_{j=1}^L \Sigma(\Delta q_j) = \sum_{j=1}^L q_j.
 	\end{equation*}
 	
-	\item We have seen that \( \Delta[q_1,\dots,q_L] \) can be computed in \( \mathcal{O}(N + L) \). 
+	\item We have seen that \( \Delta[q_1,\dots,q_L] \) can be computed in \( \mathcal{O}(L+N) \). 
 
 	\item We have seen that the prefix sum \( \Sigma(\Delta[q_1,\dots,q_L]) \) can be computed in \( \mathcal{O}(N) \). 
 
 	\item The addition \( f + \Sigma(\Delta[q_1,\dots,q_l]) \) has time complexity \( \mathcal{O}(N) \). 
 
-	\item In total: Computing \( f + \Sigma(\Delta[q_1,\dots,q_l]) \) can be done in \( \mathcal{O}(N + L) \). 
+	\item In total: Computing \( f + \Sigma(\Delta[q_1,\dots,q_l]) \) can be done in \( \mathcal{O}(L+N) \). 
     \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
     \begin{algorithmic}[1]
 	\Statex\hspace{-2em} \textbf{Input:} A discrete map \( f : D \to \mathbb R \) with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \) and a series of constant update queries \( q_1, \dots, q_Q \) on \( D \) 
 
@@ -1524,17 +1335,26 @@
 
 	\State \( d \gets \Call{DiffArr}{D,q_1,\dots,q_Q} \)
 
-	\State \(\Sigma d \gets \Call{PrefixSum}{d} \)
+	\State \(\Sigma d \gets \Call{MixedPrefixSum}{d} \)
 
 	\State \( F \gets f + \Sigma d \) 
 
 	\State \Return \( F \)
     \end{algorithmic}
 
-    \begin{proposition*}{}
-	Let \( f : D \subseteq \mathbb{Z}^d \to \mathbb{R} \) be a discrete function with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \) and \( N = \card(D) \), and let \( q_1, \dots, q_L \) be a series of constant update queries on \( D \) of arbitrary size. 
-	Assuming that for each \( k \in D \) the function value \( f(k) \) can be obtained in constant time, the algorithm above computes the updated map \( F = f + \sum_{i=1}^L q_i \) in \( \mathcal{O}(N + L) \). 
-    \end{proposition*}
+    \begin{tikzpicture}[remember picture, overlay]
+        \node [
+            anchor=south west,           % Anchor point of the text block
+            xshift=0.5cm,               % Distance from the right edge (negative is left)
+            yshift=0.5cm,                % Distance from the bottom edge (positive is up)
+            text width=6.0cm,
+            minimum height=0.5cm,
+            align=justify,
+            fill=BackgroundBlue
+        ] at (current page.south west) {
+            \textcolor{ScreenshotBlue}{\textbf{Runtime:}} \( \mathcal{O}(L + N + N + N) = \mathcal{O}(L+N) \)
+        };
+    \end{tikzpicture}
 \end{frame}
 
 \begin{frame}{Flat update queries}

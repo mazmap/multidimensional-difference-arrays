@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.6.7)  16 JUN 2026 14:50
+This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.6.7)  16 JUN 2026 18:45
  restricted system commands enabled.
  file:line:error style messages enabled.
 **multi-dimensional-difference-arrays.tex
@@ -1284,150 +1284,152 @@ LaTeX Font Warning: Font shape `U/stmry/m/n' in size <5.5> not available
 
 [2
 
-] [3
+]
+\openout4 = multi-dimensional-difference-arrays.vrb
+ (./multi-dimensional-difference-arrays.vrb) [3
 
 ] [4
 
-] [5
-
 ]
 \openout4 = multi-dimensional-difference-arrays.vrb
- (./multi-dimensional-difference-arrays.vrb) [6
+ (./multi-dimensional-difference-arrays.vrb) [5
+
+] [6
 
 ] [7
 
 ]
-\openout4 = multi-dimensional-difference-arrays.vrb
- (./multi-dimensional-difference-arrays.vrb) [8
+LaTeX Font Info:    Calculating math sizes for size <14> on input line 592.
+ [8
+
+] [9
+
+] [10
 
 ]
 \openout4 = multi-dimensional-difference-arrays.vrb
- (./multi-dimensional-difference-arrays.vrb) [9
+ (./multi-dimensional-difference-arrays.vrb
+\c@algpx@indentEndPage-0=\count420
+\c@algpx@indentEndPage-1=\count421
+)
+Overfull \vbox (6.53354pt too high) detected at line 668
+ []
+
+[11
 
 ]
-\openout4 = multi-dimensional-difference-arrays.vrb
- (./multi-dimensional-difference-arrays.vrb) [10
+Overfull \vbox (5.56277pt too high) detected at line 746
+ []
 
-] [11
-
-] [12
-
-] [13
+[12
 
 ]
-LaTeX Font Info:    Calculating math sizes for size <14> on input line 810.
- [14
+Overfull \vbox (6.31477pt too high) detected at line 804
+ []
 
-] [15
+[13
+
+]
+Overfull \vbox (6.30678pt too high) detected at line 881
+ []
+
+[14
+
+]
+Overfull \vbox (6.31477pt too high) detected at line 939
+ []
+
+[15
 
 ] [16
 
-] [17
-
 ]
-\c@algpx@indentEndPage-0=\count420
-\c@algpx@indentEndPage-1=\count421
- [18
-
-]
-Overfull \vbox (6.33076pt too high) detected at line 948
+\openout4 = multi-dimensional-difference-arrays.vrb
+ (./multi-dimensional-difference-arrays.vrb
+\c@algpx@indentEndPage-2=\count422
+\c@algpx@indentEndPage-3=\count423
+)
+Overfull \vbox (17.0046pt too high) detected at line 1002
  []
 
-[19
+[17
+
+] [18
+
+] [19
 
 ] [20
 
-]
-Overfull \vbox (6.30676pt too high) detected at line 1038
- []
+] [21
 
-[21
+] [22
 
 ]
-Overfull \vbox (6.33076pt too high) detected at line 1096
- []
-
-[22
-
-]
-Overfull \vbox (5.60277pt too high) detected at line 1173
+Overfull \vbox (17.76012pt too high) detected at line 1083
  []
 
 [23
 
 ]
-Overfull \vbox (5.56277pt too high) detected at line 1231
+\openout4 = multi-dimensional-difference-arrays.vrb
+ (./multi-dimensional-difference-arrays.vrb
+\c@algpx@indentEndPage-4=\count424
+\c@algpx@indentEndPage-5=\count425
+
+Underfull \hbox (badness 10000) in paragraph at lines 27--31
+[][][]\TU/AlegreyaSans(0)/b/n/11 Run-time:[] \TU/AlegreyaSans(0)/m/n/11 The run-time of the outer for-loop lies in
  []
 
-[24
+) [24
 
 ]
-Overfull \vbox (8.87656pt too high) detected at line 1248
- []
+\openout4 = multi-dimensional-difference-arrays.vrb
+ (./multi-dimensional-difference-arrays.vrb
+\c@algpx@indentEndPage-6=\count426
+) [25
 
-[25
+] [26
 
 ]
-\c@algpx@indentEndPage-2=\count422
-\c@algpx@indentEndPage-3=\count423
-
-Overfull \vbox (2.1156pt too high) detected at line 1273
+Underfull \hbox (badness 1509) in paragraph at lines 1188--1188
+[][][]\TU/AlegreyaSans(0)/b/n/11 Propo-si-tion:[][] \TU/AlegreyaSans(0)/m/n/11 Let $\TU/NewCMSansMath-Regular(1)/m/n/11 𝐷 = [][]\U/stmry/m/n/10.95 J\TU/NewCMSansMath-Regular(1)/m/n/11 𝑛[], 𝑚[]\U/stmry/m/n/10.95 K \TU/NewCMSansMath-Regular(1)/m/n/11 ⊆ ℤ[]$ \TU/AlegreyaSans(0)/m/n/11 be a fi-nite grid do-main and $\TU/NewCMSansMath-Regular(1)/m/n/11 𝑝 =
  []
 
-[26
+[27
 
-] [27
+]
+Overfull \vbox (11.29579pt too high) detected at line 1211
+ []
 
-] [28
+[28
 
 ] [29
 
-] [30
+]
+Overfull \vbox (14.43707pt too high) detected at line 1261
+ []
+
+[30
 
 ] [31
 
 ] [32
 
-]
-\c@algpx@indentEndPage-4=\count424
-\c@algpx@indentEndPage-5=\count425
-\c@algpx@indentEndPage-6=\count426
- [33
+] [33
 
-] [34
+]
+\openout4 = multi-dimensional-difference-arrays.vrb
+ (./multi-dimensional-difference-arrays.vrb) [34
 
 ] [35
 
-]
-Underfull \hbox (badness 1509) in paragraph at lines 1426--1426
-[][][]\TU/AlegreyaSans(0)/b/n/11 Propo-si-tion:[][] \TU/AlegreyaSans(0)/m/n/11 Let $\TU/NewCMSansMath-Regular(1)/m/n/11 𝐷 = [][]\U/stmry/m/n/10.95 J\TU/NewCMSansMath-Regular(1)/m/n/11 𝑛[], 𝑚[]\U/stmry/m/n/10.95 K \TU/NewCMSansMath-Regular(1)/m/n/11 ⊆ ℤ[]$ \TU/AlegreyaSans(0)/m/n/11 be a fi-nite grid do-main and $\TU/NewCMSansMath-Regular(1)/m/n/11 𝑝 =
- []
+] [36
 
-[36
-
-]
-Overfull \vbox (11.3038pt too high) detected at line 1449
- []
-
-[37
+] [37
 
 ] [38
 
 ] [39
-
-] [40
-
-] [41
-
-] [42
-
-] [43
-
-] [44
-
-] [45
-
-] [46
 
 ]
 \tf@nav=\write6
@@ -1454,19 +1456,19 @@ Package rerunfilecheck Info: File `multi-dimensional-difference-arrays.out' has 
 )
 
 Here is how much of LuaTeX's memory you used:
- 38143 strings out of 476076
- 100000,1648299 words of node,token memory allocated
- 9643 words of node memory still in use:
-   201 hlist, 18 vlist, 2 rule, 1 local_par, 46 math, 339 glue, 24 kern, 8 penalty, 83 glyph, 689 attribute, 68 glue_spec, 689 attribute_list, 4 write, 338 pdf_literal, 10 pdf_colorstack nodes
-   avail lists: 2:7141,3:3103,4:474,5:450,6:67,7:4980,8:68,9:2062,10:18,11:111
- 59503 multiletter control sequences out of 65536+600000
- 156 fonts using 78258367 bytes
- 128i,16n,116p,409b,1119s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 38146 strings out of 476076
+ 125007,1648299 words of node,token memory allocated
+ 9719 words of node memory still in use:
+   201 hlist, 18 vlist, 2 rule, 1 local_par, 46 math, 339 glue, 24 kern, 8 penalty, 83 glyph, 708 attribute, 68 glue_spec, 708 attribute_list, 4 write, 338 pdf_literal, 10 pdf_colorstack nodes
+   avail lists: 2:5669,3:4123,4:474,5:469,6:73,7:6642,8:68,9:2640,10:22,11:99
+ 59499 multiletter control sequences out of 65536+600000
+ 156 fonts using 78257923 bytes
+ 128i,14n,116p,451b,1119s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/opentype/public/newcomputermodern/NewCMSansMath-Regular.otf></usr/local/texlive/2026/texmf-dist/fonts/opentype/public/newcomputermodern/NewCMSansMath-Regular.otf></Library/Fonts/NewCMMono10-Regular.otf></Users/matteo/Library/Fonts/AlegreyaSans-Italic.ttf></usr/local/texlive/2026/texmf-dist/fonts/opentype/public/newcomputermodern/NewCMSansMath-Regular.otf></Users/matteo/Library/Fonts/AlegreyaSans-Regular.ttf></Users/matteo/Library/Fonts/AlegreyaSans-Bold.ttf></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/stmaryrd/stmary10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/stmaryrd/stmary8.pfb>
-Output written on multi-dimensional-difference-arrays.pdf (46 pages, 154582 bytes).
+Output written on multi-dimensional-difference-arrays.pdf (39 pages, 140643 bytes).
 
-PDF statistics: 319 PDF objects out of 1000 (max. 8388607)
- 238 compressed objects within 3 object streams
- 93 named destinations out of 1000 (max. 1048576)
+PDF statistics: 283 PDF objects out of 1000 (max. 8388607)
+ 209 compressed objects within 3 object streams
+ 79 named destinations out of 1000 (max. 1048576)
  16 words of extra memory for PDF output out of 10000 (max. 100000000)
 
