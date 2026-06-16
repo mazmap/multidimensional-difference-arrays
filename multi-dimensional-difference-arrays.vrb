@@ -1,11 +1,11 @@
 \begin{algorithmic}[1]
-	\Statex\hspace{-2em} \textbf{Input:} A discrete map \( f : D \to \mathbb R \) with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \) and a series of constant update queries \( q_1, \dots, q_Q \) on \( D \)
+	\Statex\hspace{-2em} \textbf{Input:} A discrete map \( f : D \to \mathbb R \) with \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \) and a series of constant update queries \( q_1, \dots, q_L \) on \( D \)
 
-	\Statex\hspace{-2em} \textbf{Output:} The updated map \( F = f + \sum_{i=1}^Q q_i \)
+	\Statex\hspace{-2em} \textbf{Output:} The updated map \( F = f + \sum_{i=1}^L q_i \)
 
 	\Statex
 
-	\State \( d \gets \Call{DiffArr}{D,q_1,\dots,q_Q} \)
+	\State \( d \gets \Call{DiffArr}{D,q_1,\dots,q_L} \)
 
 	\State \(\Sigma d \gets \Call{MixedPrefixSum}{d} \)
 
@@ -24,6 +24,6 @@
             align=justify,
             fill=BackgroundBlue
         ] at (current page.south west) {
-            \textcolor{ScreenshotBlue}{\textbf{Runtime:}} \( \mathcal{O}(L + N + N + N) = \mathcal{O}(L+N) \)
+            \textcolor{ScreenshotBlue}{\textbf{Runtime:}} \( \mathcal{O}(L + N + N + N) = \mathcal{O}(L+N) \) with \( N := \card(D) \)
         };
     \end{tikzpicture}

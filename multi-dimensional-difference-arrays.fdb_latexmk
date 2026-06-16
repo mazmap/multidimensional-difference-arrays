@@ -1,5 +1,5 @@
 # Fdb version 4
-["lualatex"] 1781628323.81687 "multi-dimensional-difference-arrays.tex" "multi-dimensional-difference-arrays.pdf" "multi-dimensional-difference-arrays" 1781628330.17366 0
+["lualatex"] 1781644520.19162 "multi-dimensional-difference-arrays.tex" "multi-dimensional-difference-arrays.pdf" "multi-dimensional-difference-arrays" 1781644530.97041 0
   "/Library/Fonts/NewCMMono10-Regular.otf" 1704729516 343900 c92d422460015b0484831193e9dda0d5 ""
   "/Users/matteo/Library/Fonts/AlegreyaSans-Bold.ttf" 1727709108 251476 d062709cbb8a34da7b79662fc4a4eb7a ""
   "/Users/matteo/Library/Fonts/AlegreyaSans-Italic.ttf" 1727709108 250588 bb4c77b032a3b29ba4285181388ce432 ""
@@ -119,6 +119,8 @@
   "/usr/local/texlive/2026/texmf-dist/tex/generic/unicode-data/UnicodeData.txt" 1758919076 2198209 959cb19fcda0240caef8c02953e3d771 ""
   "/usr/local/texlive/2026/texmf-dist/tex/generic/unicode-data/WordBreakProperty.txt" 1758919076 114445 2bb35daee3b51042dd392f0c648c5cc2 ""
   "/usr/local/texlive/2026/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty" 1576624663 7008 f92eaa0a3872ed622bbf538217cd2ab7 ""
+  "/usr/local/texlive/2026/texmf-dist/tex/generic/xkeyval/xkeyval.tex" 1762376337 19299 c7c03646b32f5a7caaa137673b7e76d2 ""
+  "/usr/local/texlive/2026/texmf-dist/tex/generic/xkeyval/xkvutils.tex" 1762376337 7787 7dfc2f158253fc82fd655393220e6620 ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty" 1160617237 26750 ce139c05a983e19ddca355b43e29c395 ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/algpseudocodex/algpseudocodex.sty" 1744918424 43591 6e9818f3bfce6a3477b1c0ddf7090fbc ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/amscls/amsthm.sty" 1591045760 12594 0d51ac3a545aaaa555021326ff22a6cc ""
@@ -225,6 +227,7 @@
   "/usr/local/texlive/2026/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty" 1601326656 274 5ae372b7df79135d240456a1c6f2cf9a ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty" 1601326656 325 f9f16d12354225b7dd52a3321f085955 ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/pgf/utilities/xxcolor.sty" 1601326656 2232 b9a67bccba736ed334b4b1a860a85c6f ""
+  "/usr/local/texlive/2026/texmf-dist/tex/latex/qrcode/qrcode.sty" 1421364289 97259 c0b10c086d1f3ce9a4d6f360d059d5ec ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/refcount/refcount.sty" 1576624809 9878 9e94e8fa600d95f9c7731bb21dfb67a4 ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty" 1750533675 9684 a33a14b82ce60d6e77cb9be689d79ee6 ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/sansmathaccent/sansmathaccent.sty" 1580595219 4282 5d27280ace1239baaa4a225df16125ff ""
@@ -258,6 +261,7 @@
   "/usr/local/texlive/2026/texmf-dist/tex/latex/url/url.sty" 1388531844 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/varwidth/varwidth.sty" 1238697683 10894 d359a13923460b2a73d4312d613554c8 ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/xcolor/xcolor.sty" 1727642399 55384 b454dec21c2d9f45ec0b793f0995b992 ""
+  "/usr/local/texlive/2026/texmf-dist/tex/latex/xkeyval/xkeyval.sty" 1762376337 5006 d7e899bb5d9717c7f214e9bc0284de7b ""
   "/usr/local/texlive/2026/texmf-dist/tex/lualatex/lualatex-math/lualatex-math.lua" 1601846097 1313 28342dc97f216f8150c33beea0e9a41c ""
   "/usr/local/texlive/2026/texmf-dist/tex/lualatex/lualatex-math/lualatex-math.sty" 1641072716 8657 cb1b65427f12641ff87b153e1e2b120f ""
   "/usr/local/texlive/2026/texmf-dist/tex/luatex/lua-uni-algos/lua-uni-case.lua" 1756668036 1916 bc93b4a554f03a6a84c3692f1e89d9be ""
@@ -306,11 +310,11 @@
   "/usr/local/texlive/2026/texmf-dist/tex/luatex/luaotfload/luaotfload.lua" 1740687098 13566 16df94dd2de231b2bca0aaa0190941fe ""
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1780784961 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/luahbtex/lualatex.fmt" 1780784799 5655671 3837cf96279d6b1bd98648c27f27a5d0 ""
-  "multi-dimensional-difference-arrays.aux" 1781628329.86395 14560 62e81b12288eaeacc74d083a9b965510 "lualatex"
-  "multi-dimensional-difference-arrays.nav" 1781628329.86931 3806 dc6cd9bd11b5862db379b6b87555791e "lualatex"
-  "multi-dimensional-difference-arrays.out" 1781628327.48395 0 d41d8cd98f00b204e9800998ecf8427e "lualatex"
-  "multi-dimensional-difference-arrays.tex" 1781628310.22905 66799 b22523a2925a3cf85bf24b81f8204985 ""
-  "multi-dimensional-difference-arrays.vrb" 1781628329.50661 1153 d8a7bb9e77d97bf41200cc249ab329fb "lualatex"
+  "multi-dimensional-difference-arrays.aux" 1781644530.55451 26233 7ca2fa2e92a540b58a13cb955d2b430f "lualatex"
+  "multi-dimensional-difference-arrays.nav" 1781644530.56394 4592 c58b3f7ae82404dfa794cbd2490b33c7 "lualatex"
+  "multi-dimensional-difference-arrays.out" 1781644524.62078 0 d41d8cd98f00b204e9800998ecf8427e "lualatex"
+  "multi-dimensional-difference-arrays.tex" 1781644496.25897 76509 861fa93a765f8d262c74a973387387c0 ""
+  "multi-dimensional-difference-arrays.vrb" 1781644530.09596 1178 748f8b3e4489c1cf00c70049a4d13183 "lualatex"
   (generated)
   "multi-dimensional-difference-arrays.aux"
   "multi-dimensional-difference-arrays.log"
