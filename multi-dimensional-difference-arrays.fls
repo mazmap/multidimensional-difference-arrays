@@ -214,6 +214,16 @@ INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/beamer/beamericononline.pdf
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/beamer/beamericononline.20.pdf
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/beamer/beamericononline.20.pdf
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/beamer/beamerouterthemedefault.sty
+INPUT /usr/local/texlive/2026/texmf-dist/tex/generic/babel/babel.sty
+INPUT /usr/local/texlive/2026/texmf-dist/tex/generic/babel/luababel.def
+INPUT /usr/local/texlive/2026/texmf-var/tex/generic/config/language.dat
+INPUT /usr/local/texlive/2026/texmf-dist/tex/generic/babel/luababel.def
+INPUT /usr/local/texlive/2026/texmf-dist/tex/generic/babel/locale/en/babel-english.tex
+INPUT /usr/local/texlive/2026/texmf-dist/tex/generic/babel/locale/en/babel-en.ini
+INPUT /usr/local/texlive/2026/texmf-dist/tex/generic/babel-english/english.ldf
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/csquotes/csquotes.sty
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/csquotes/csquotes.def
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/csquotes/csquotes.cfg
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/fontspec/fontspec.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/l3kernel/expl3.sty
@@ -346,6 +356,9 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/stmaryrd/stmary10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/stmaryrd/stmary10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/stmaryrd/stmary7.tfm
 OUTPUT multi-dimensional-difference-arrays.vrb
+INPUT ./multi-dimensional-difference-arrays.vrb
+INPUT ./multi-dimensional-difference-arrays.vrb
+INPUT ./multi-dimensional-difference-arrays.vrb
 INPUT ./multi-dimensional-difference-arrays.vrb
 INPUT ./multi-dimensional-difference-arrays.vrb
 INPUT ./multi-dimensional-difference-arrays.vrb

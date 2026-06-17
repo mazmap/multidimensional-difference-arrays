@@ -8,6 +8,10 @@
 % ==========================================
 \geometry{paperwidth=14.41cm, paperheight=9cm}
 
+\usepackage[english]{babel}
+\usepackage[autostyle=true]{csquotes}
+\MakeOuterQuote{"}
+
 % ==========================================
 % TYPOGRAPHY & MATH FONTS (Compile with XeLaTeX/LuaLaTeX)
 % ==========================================
@@ -190,17 +194,17 @@
     {\fontsize{14}{18}\selectfont\color{TextBlack} via Discrete Calculus \par}
     \vfill
     {\qrcode[height=2cm]{https://github.com/mazmap/multidimensional-difference-arrays}\par}
+    \vspace{0.2cm}
+    (\texttt{https://github.com/mazmap/multidimensional-difference-arrays}) \par
     \vspace{0.1cm}
-    \( \uparrow \) Slides \( \uparrow \) \par
-    \vspace{0.1cm}
-    (\texttt{https://github.com/mazmap/multidimensional-difference-arrays})
+    \( \uparrow \) Slides \( \uparrow \)
 \end{frame}
 
 \begin{frame}{Who am I?}
     \begin{itemize}[<+->] 
         \item Matteo Mertz 
-        \item Finishing my bachelor degree in mathematics at TUM 
-        \item Currrently writing my bachelors thesis under the supervision of Professor Bauer and Matthias Söls on the \emph{Efficient computation of Euler characteristic profiles (of cubical filtrations of digital images)}
+        \item Finishing my bachelors degree in mathematics at TUM 
+        \item Currrently writing my bachelors thesis on the \emph{Efficient computation of Euler characteristic profiles (of cubical filtrations of digital images)}
     \end{itemize}
 \end{frame}
 
@@ -381,17 +385,23 @@
 
         \drawArrayRow{\texttt{d}:}{0/0, 0/0, 0/0, 0/0, 0/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{0}
 		
+        \uncover<4->{
 		\drawQueryBlock{Mark query}{-\rowBlockGap/2}
 		
         \drawArrayRow{\texttt{d}:}{0/0, +C/1, 0/0, 0/0, -C/1, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{-\rowBlockGap}
+        }
 		
+        \uncover<5->{
 		\drawQueryBlock{Cumulative sum}{-\rowBlockGap - \rowBlockGap/2}
 		
         \drawArrayRow{\(\Sigma\)\texttt{d}:}{0/0, C/0, C/0, C/0, 0/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{-2*\rowBlockGap}
+        }
 
+        \uncover<6->{
 		\drawQueryBlock{Applying the total update}{-2*\rowBlockGap - \rowBlockGap/2}
 		
         \drawArrayRow{\texttt{A} + \texttt{\(\Sigma\)d}:}{*/0, +C/0, +C/0, +C/0, */0, */0, */0, */0, */0}{\maxIndex}{-3*\rowBlockGap}
+        }
 	    \end{tikzpicture}
 	\end{column}
 
@@ -1042,11 +1052,11 @@
 
 \begin{frame}[fragile] 
     \begin{algorithmic}[1]
-	\Statex\hspace{-2em} \textbf{Procedure:} \( \textsc{DiffArr}(D,q_1,\dots,q_L) \)
+	\Statex\hspace{-2em} \textbf{Procedure:} \( \textsc{DiffArr}(q_1,\dots,q_L) \)
 
 	\Statex\hspace{-2em} \textbf{Input:} A finite grid domain \( D = \prod_{i=1}^d \llbracket n_i, m_i \rrbracket \subseteq \mathbb{Z}^d \) and a series of constant update queries \( q_1, \dots, q_L \) on \( D \) over the update ranges \( D_j = \prod_{i=1}^d \llbracket a_i^{(j)}, b_i^{(j)} \rrbracket \) with update values \( C_j \) for \( 1 \leq j \leq L \)
 
-	\Statex\hspace{-2em} \textbf{Output:} The difference array \( \Delta[q_1,\dots,q_L] \)
+	\Statex\hspace{-2em} \textbf{Output:} The difference array \( \displaystyle \Delta[q_1,\dots,q_L] = \sum_{j=1}^L \sum_{p \in M_j} (-1)^{N_j(p)} \cdot C_j \cdot \delta_p \)
 
 	\Statex
 
@@ -1875,10 +1885,10 @@
     {\fontsize{22}{28}\selectfont\bfseries\color{ScreenshotBlue} Any questions?}
     \vfill
     {\qrcode[height=2cm]{https://github.com/mazmap/multidimensional-difference-arrays}\par}
+    \vspace{0.2cm}
+    (\texttt{https://github.com/mazmap/multidimensional-difference-arrays}) \par
     \vspace{0.1cm}
-    \( \uparrow \) Slides \( \uparrow \) \par
-    \vspace{0.1cm}
-    (\texttt{https://github.com/mazmap/multidimensional-difference-arrays})
+    \( \uparrow \) Slides \( \uparrow \)
 \end{frame}
 
 \end{document}
