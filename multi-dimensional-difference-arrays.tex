@@ -1,6 +1,6 @@
 \documentclass[
     t,10pt,
-    %handout
+    handout
 ]{beamer}
 
 % ==========================================
@@ -185,7 +185,7 @@
 \begin{frame}[plain]
     \centering
     \vfill
-    {\fontsize{22}{28}\selectfont\bfseries\color{ScreenshotBlue} Multidimensional difference arrays \par}
+    {\fontsize{22}{28}\selectfont\bfseries\color{ScreenshotBlue} Multidimensional Difference Arrays \par}
     \vspace{0.1cm}
     {\fontsize{14}{18}\selectfont\color{TextBlack} via Discrete Calculus \par}
     \vfill
@@ -199,8 +199,8 @@
 \begin{frame}{Who am I?}
     \begin{itemize}[<+->] 
         \item Matteo Mertz 
-        \item Finishing my mathematics bachelor at TUM 
-        \item Currently writing my bachelors thesis under the supervision of Prof. Bauer and Matthias Söls on the \emph{Efficient computation of Euler characteristic profiles (of cubical filtrations of digital images)}
+        \item Finishing my bachelor degree in mathematics at TUM 
+        \item Currrently writing my bachelors thesis under the supervision of Professor Bauer and Matthias Söls on the \emph{Efficient computation of Euler characteristic profiles (of cubical filtrations of digital images)}
     \end{itemize}
 \end{frame}
 
@@ -387,7 +387,7 @@
 		
 		\drawQueryBlock{Cumulative sum}{-\rowBlockGap - \rowBlockGap/2}
 		
-        \drawArrayRow{\(\Sigma\) \texttt{d}:}{0/0, C/0, C/0, C/0, 0/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{-2*\rowBlockGap}
+        \drawArrayRow{\(\Sigma\)\texttt{d}:}{0/0, C/0, C/0, C/0, 0/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{-2*\rowBlockGap}
 
 		\drawQueryBlock{Applying the total update}{-2*\rowBlockGap - \rowBlockGap/2}
 		
@@ -432,7 +432,7 @@
 
         \item The difference array algorithm works as the cumulative sum distributes over the markers of multiple queries: 
             \begin{equation*}
-                \Sigma\texttt{d}[j] = \sum_{l=1}^j \texttt{d}[l] = \sum_{l=1}^j \sum_{i=1}^L \texttt{d}_i[l] = \sum_{i=1}^L \sum_{l=1}^j \texttt{d}_i[l] = \sum_{i=1}^L \Sigma \texttt{d}_i 
+                \Sigma\texttt{d}[j] = \sum_{l=1}^j \texttt{d}[l] = \sum_{l=1}^j \sum_{i=1}^L \texttt{d}_i[l] = \sum_{i=1}^L \sum_{l=1}^j \texttt{d}_i[l] = \sum_{i=1}^L \Sigma \texttt{d}_i[j]
             \end{equation*}
 
         \item The cumulative sum \( \Sigma\texttt{d} \) can be computed in \( \mathcal{O}(N) \) by reusing previous results: 
@@ -446,7 +446,7 @@
     This concept can easily be generalized to 2D arrays. 
 
     \begin{columns}[T]
-	\begin{column}{0.5\textwidth}
+	\begin{column}<1->{0.5\textwidth}
 	    \begin{tikzpicture}[
 		% Style for the grid lines
 		gridline/.style={thick, draw=black},
@@ -488,7 +488,7 @@
 
 	    Naively applying the constant update to a \( 5 \times 8 \) array \texttt{A}.
 	\end{column}
-	\begin{column}{0.45\textwidth}
+	\begin{column}<2->{0.45\textwidth}
 	    \begin{tikzpicture}[
 		% Style for the grid lines
 		gridline/.style={thick, draw=black},
@@ -523,9 +523,7 @@
     Taking cumulative sums in both directions yields the correct upates.
 
     \begin{columns}[T]
-	\begin{column}{0.5\textwidth}
-	    \vfill
-
+	\begin{column}<1->{0.5\textwidth}
 	    \begin{tikzpicture}[
 		% Style for the grid lines
 		gridline/.style={thick, draw=black},
@@ -556,10 +554,9 @@
 		\draw[-Stealth,thick,white] (0,-0.5) -- (8,-0.5);
 	    \end{tikzpicture}
 
-	    \vfill
+        Cumulative sum along the \( y \)-axis
 	\end{column}
-	\begin{column}{0.45\textwidth}
-	    \vfill
+	\begin{column}<2->{0.45\textwidth}
 	    \begin{tikzpicture}[
 		% Style for the grid lines
 		gridline/.style={thick, draw=black},
@@ -587,22 +584,23 @@
 
 		\draw[-Stealth,thick] (0,-0.5) -- (8,-0.5);
 	    \end{tikzpicture}
-	    \vfill
+
+        Cumulative sum along the \( x \)-axis
 	\end{column}
     \end{columns}
 \end{frame}
 
 \begin{frame}{\(d\)-dimensional difference arrays?}
     \begin{itemize}[<+->]
-	\item This heuristic can easily be extended to \( d \)-dimensional arrays by placing \( 2^d \) markers for every query. 
+	\item This heuristic can easily be extended to \( d \)-dimensional arrays by placing \( 2^d \) markers for every query 
 
-	\item However for dimensions \( d \geq 4 \) this is hard to conceptially verify. 
+	\item However for dimensions \( d \geq 4 \) this is hard to conceptially verify
 
-	\item Furthermore, "naive" proofs without any additional tools are bound to get very messy. 
+	\item Furthermore, "naive" proofs without any additional tools are bound to get very messy 
 
-	\item This is where \emph{Discrete Calculus} comes into play. 
+	\item This is where \emph{Discrete Calculus} comes into play
 
-	\item To leaverage these tools, we first need to formally describe our situation.
+	\item To leaverage these tools, we first need to formally describe our situation
     \end{itemize}
 
 \end{frame}
@@ -1176,7 +1174,7 @@
 	\Statex 
 
 	\State \( S \gets \) The discrete map \( f : D \to \mathbb{R} \) \hspace{2em}
-	\For{ \( (k_1,\dots,k_{j-1}, k_{j+1}, \dots, k_d) \in \prod_{\substack{i=1\\i\neq j}}^d \llbracket n_i, m_i \rrbracket \) }
+    \For{ \( (k_1,\dots,k_{j-1}, k_{j+1}, \dots, k_d) \in D_{-j}:=\prod_{\substack{i=1\\i\neq j}}^d \llbracket n_i, m_i \rrbracket \) }
 	    \For{ \( t \in \llbracket n_j+1, m_j \rrbracket \) }
 		    \State \( S(k_1,\dots,k_{j-1}, t, k_{j+1}, \dots,k_d) \gets S(k_1, \dots, k_{j-1}, t-1, k_{j+1}, \dots, k_d) \) \\ \( \phantom{S(k_1,\dots,k_{j-1}, t, k_{j+1}, \dots,k_d) \gets} + S(k_1,\dots,k_{j-1},t,k_{j+1},\dots,k_d) \)
 	    \EndFor
@@ -1197,7 +1195,7 @@
             fill=BackgroundBlue
         ] at (current page.south east) {
             \textcolor{ScreenshotBlue}{\textbf{Runtime:}} 
-            The runtime of the outer for-loop lies in \( \mathcal{O}\left( \left|\prod_{\substack{i=1\\i\neq j}}^d \llbracket n_i, m_i \rrbracket\right| \cdot \left|\llbracket n_j+1,m_j \rrbracket\right| \right) = \mathcal{O}(|D|) \) \\
+            The runtime of the outer for-loop lies in \( \mathcal{O}\left( \card(D_{-j}) \cdot \card(\llbracket n_j+1,m_j \rrbracket) \right) = \mathcal{O}(\card(D)) \) \\
             \( \implies \)Total runtime: \( \mathcal{O}(N) \) with \( N = \card(D) \). 
         };
     \end{tikzpicture}
@@ -1233,7 +1231,7 @@
             align=justify,
             fill=BackgroundBlue
         ] at (current page.south west) {
-            \textcolor{ScreenshotBlue}{\textbf{Runtime:}} \( \mathcal{O}(N) \)
+            \textcolor{ScreenshotBlue}{\textbf{Runtime:}} \( \mathcal{O}(N) \) with \( N = \card(D) \)
         };
     \end{tikzpicture}
     }
@@ -1266,14 +1264,16 @@
 	    \end{cases}
 	\end{equation*}
     \end{proposition*}
+    \uncover<2->{
     \begin{proof}
-    \begin{itemize}[<+->]
+    \begin{itemize}
 	    \item It is straight forward to see that \( H_p = \prod_{i=1}^d H_{p_i} \)
 	    \item One can show that for such products we have \( \Delta H_p = \prod_{i=1}^d \Delta H_{p_i} \)
 	    \item Show \( \Delta H_{p_i} = \delta_{p_i} \) by a simple case distinction
 	    \item Finally, \( \Delta H_p = \prod_{i=1}^d \delta_{p_i} = \delta_{(p_1,\dots,p_d)} \) \qedhere
 	\end{itemize}
     \end{proof}
+    }
 \end{frame}
 
 \begin{frame}
@@ -1298,16 +1298,17 @@
 
 	% 3. Draw Axis Ticks and Labels
 	% X-axis ticks (at integer coordinates)
-	\draw[thick] (2, -0.1) -- (2, 0.1) node[below=5pt] {$n_1$};
-	\draw[thick] (6, -0.1) -- (6, 0.1) node[below=5pt] {$m_1$};
+	\draw[thick] (2, -0.1) -- (2, 0.1) node[below=5pt] {$a_1$};
+	\draw[thick] (6, -0.1) -- (6, 0.1) node[below=5pt] {$b_1$};
 
 	% Y-axis ticks (at integer coordinates)
-	\draw[thick] (-0.1, 2) -- (0.1, 2) node[left=5pt] {$n_2$};
-	\draw[thick] (-0.1, 4) -- (0.1, 4) node[left=5pt] {$m_2$};
+	\draw[thick] (-0.1, 2) -- (0.1, 2) node[left=5pt] {$a_2$};
+	\draw[thick] (-0.1, 4) -- (0.1, 4) node[left=5pt] {$b_2$};
 
 	% 4. Draw Rectangles (Edges exactly between grid points)
 	% y-span is from 1.5 to 6.5
 	\fill[gray, opacity=0.2] (2-0.5, 2-0.5) rectangle (6+0.5, 5-0.5);  % q1 bounding box
+    \node[anchor=center] at (4,1) {$D$};
 
     \end{tikzpicture}
 \end{frame}
@@ -1323,111 +1324,36 @@
 
 	% 3. Draw Axis Ticks and Labels
 	% X-axis ticks (at integer coordinates)
-	\draw[thick] (2, -0.1) -- (2, 0.1) node[below=5pt] {$n_1$};
-	\draw[thick] (6, -0.1) -- (6, 0.1) node[below=5pt] {$m_1$};
+	\draw[thick] (2, -0.1) -- (2, 0.1) node[below=5pt] {$a_1$};
+	\draw[thick] (6, -0.1) -- (6, 0.1) node[below=5pt] {$b_1$};
 
 	% Y-axis ticks (at integer coordinates)
-	\draw[thick] (-0.1, 2) -- (0.1, 2) node[left=5pt] {$n_2$};
-	\draw[thick] (-0.1, 4) -- (0.1, 4) node[left=5pt] {$m_2$};
+	\draw[thick] (-0.1, 2) -- (0.1, 2) node[left=5pt] {$a_2$};
+	\draw[thick] (-0.1, 4) -- (0.1, 4) node[left=5pt] {$b_2$};
 
 	% 4. Draw Rectangles (Edges exactly between grid points)
 	% y-span is from 1.5 to 6.5
 	\fill[gray, opacity=0.2] (2-0.5, 2-0.5) rectangle (6+0.5, 5-0.5);  % q1 bounding box
-	\fill[Green, opacity=0.2] (2-0.5, 2-0.5) rectangle (12+0.5, 7+0.5);  % q1 bounding box
-    \node[Green, anchor=center] at (4,3) {$+$};
-
-    \end{tikzpicture}
-\end{frame}
-
-\begin{frame}
-    \vspace{.5cm}
-    \begin{tikzpicture}
-	\draw[help lines, color=gray, step=1cm] (0,0) grid (12, 7);
-
-	% 2. Draw Axes
-	\draw[->, thick] (-0.15, 0) -- (12, 0); % X-axis
-	\draw[->, thick] (0, -0.15) -- (0, 7);  % Y-axis
-
-	% 3. Draw Axis Ticks and Labels
-	% X-axis ticks (at integer coordinates)
-	\draw[thick] (2, -0.1) -- (2, 0.1) node[below=5pt] {$n_1$};
-	\draw[thick] (6, -0.1) -- (6, 0.1) node[below=5pt] {$m_1$};
-
-	% Y-axis ticks (at integer coordinates)
-	\draw[thick] (-0.1, 2) -- (0.1, 2) node[left=5pt] {$n_2$};
-	\draw[thick] (-0.1, 4) -- (0.1, 4) node[left=5pt] {$m_2$};
-
-	% 4. Draw Rectangles (Edges exactly between grid points)
-	% y-span is from 1.5 to 6.5
-	\fill[gray, opacity=0.2] (2-0.5, 2-0.5) rectangle (6+0.5, 5-0.5);  % q1 bounding box
-	\fill[Green, opacity=0.2] (2-0.5, 2-0.5) rectangle (12+0.5, 7+0.5);  % q1 bounding box
-    \node[Green, anchor=center] at (4,3) {$+$};
-	\fill[ScreenshotBlue, opacity=0.2] (2-0.5, 5-0.5) rectangle (12+0.5, 7+0.5);  % q1 bounding box
-    \node[ScreenshotBlue, anchor=center] at (4,6) {$-$};
-
-    \end{tikzpicture}
-\end{frame}
-
-\begin{frame}
-    \vspace{.5cm}
-    \begin{tikzpicture}
-	\draw[help lines, color=gray, step=1cm] (0,0) grid (12, 7);
-
-	% 2. Draw Axes
-	\draw[->, thick] (-0.15, 0) -- (12, 0); % X-axis
-	\draw[->, thick] (0, -0.15) -- (0, 7);  % Y-axis
-
-	% 3. Draw Axis Ticks and Labels
-	% X-axis ticks (at integer coordinates)
-	\draw[thick] (2, -0.1) -- (2, 0.1) node[below=5pt] {$n_1$};
-	\draw[thick] (6, -0.1) -- (6, 0.1) node[below=5pt] {$m_1$};
-
-	% Y-axis ticks (at integer coordinates)
-	\draw[thick] (-0.1, 2) -- (0.1, 2) node[left=5pt] {$n_2$};
-	\draw[thick] (-0.1, 4) -- (0.1, 4) node[left=5pt] {$m_2$};
-
-	% 4. Draw Rectangles (Edges exactly between grid points)
-	% y-span is from 1.5 to 6.5
-	\fill[gray, opacity=0.2] (2-0.5, 2-0.5) rectangle (6+0.5, 5-0.5);  % q1 bounding box
+    \uncover<1->{
 	\fill[Green, opacity=0.2] (2-0.5, 2-0.5) rectangle (12+0.5, 7+0.5);  % q1 bounding box
     \node[Green, anchor=center] at (4,3) {\Large$+$};
+    \fill[Green] (2,2) circle [radius=2pt];
+    }
+    \uncover<2->{
 	\fill[ScreenshotBlue, opacity=0.2] (2-0.5, 5-0.5) rectangle (12+0.5, 7+0.5);  % q1 bounding box
     \node[ScreenshotBlue, anchor=center] at (4,6) {\Large$-$};
+    \fill[ScreenshotBlue] (2,5) circle [radius=2pt];
+    }
+    \uncover<3->{
 	\fill[ScreenshotBlue, opacity=0.2] (6+0.5, 2-0.5) rectangle (12+0.5, 7+0.5);  % q1 bounding box
     \node[ScreenshotBlue, anchor=center] at (9.5,3) {\Large$-$};
-
-    \end{tikzpicture}
-\end{frame}
-
-\begin{frame}
-    \vspace{.5cm}
-    \begin{tikzpicture}
-	\draw[help lines, color=gray, step=1cm] (0,0) grid (12, 7);
-
-	% 2. Draw Axes
-	\draw[->, thick] (-0.15, 0) -- (12, 0); % X-axis
-	\draw[->, thick] (0, -0.15) -- (0, 7);  % Y-axis
-
-	% 3. Draw Axis Ticks and Labels
-	% X-axis ticks (at integer coordinates)
-	\draw[thick] (2, -0.1) -- (2, 0.1) node[below=5pt] {$n_1$};
-	\draw[thick] (6, -0.1) -- (6, 0.1) node[below=5pt] {$m_1$};
-
-	% Y-axis ticks (at integer coordinates)
-	\draw[thick] (-0.1, 2) -- (0.1, 2) node[left=5pt] {$n_2$};
-	\draw[thick] (-0.1, 4) -- (0.1, 4) node[left=5pt] {$m_2$};
-
-	% 4. Draw Rectangles (Edges exactly between grid points)
-	% y-span is from 1.5 to 6.5
-	\fill[gray, opacity=0.2] (2-0.5, 2-0.5) rectangle (6+0.5, 5-0.5);  % q1 bounding box
-	\fill[Green, opacity=0.2] (2-0.5, 2-0.5) rectangle (12+0.5, 7+0.5);  % q1 bounding box
-    \node[Green, anchor=center] at (4,3) {\Large$+$};
-	\fill[ScreenshotBlue, opacity=0.2] (2-0.5, 5-0.5) rectangle (12+0.5, 7+0.5);  % q1 bounding box
-    \node[ScreenshotBlue, anchor=center] at (4,6) {\Large$-$};
-	\fill[ScreenshotBlue, opacity=0.2] (6+0.5, 2-0.5) rectangle (12+0.5, 7+0.5);  % q1 bounding box
-    \node[ScreenshotBlue, anchor=center] at (9.5,3) {\Large$-$};
+    \fill[ScreenshotBlue] (7,2) circle [radius=2pt];
+    }
+    \uncover<4->{
 	\fill[BlueViolet, opacity=0.4] (6+0.5, 5-0.5) rectangle (12+0.5, 7+0.5);  % q1 bounding box
     \node[BlueViolet, anchor=center] at (9.5,6) {\Large$+$};
+    \fill[BlueViolet] (7,5) circle [radius=2pt];
+    }
 
     \end{tikzpicture}
 \end{frame}
@@ -1441,8 +1367,9 @@
 	\end{equation*}
 	where \( N(p) = \card\{ p_i \mid p_i = b_i+1 \} \). 
     \end{proposition*}
+    \uncover<2->{
     \begin{proof}
-    \begin{itemize}[<+->] 
+    \begin{itemize} 
 	    \item It is not hard to see that \( \mathbb{1}_D(k_1,\dots,k_d) = \prod_{i=1}^d \mathbb{1}_{\llbracket a_i, b_i \rrbracket}(k_i) \)
 	\item By a simple case distiction we see that \( \mathbb{1}_{\llbracket a_i, b_i \rrbracket}(k_i) = H_{a_i}(k_i) - H_{b_i+1}(k_i) \) 
 	    \item Hence, \( \mathbb{1}_D(k_1,\dots,k_d) = \prod_{i=1}^d \left( H_{a_i}(k_i) - H_{b_i+1}(k_i) \right) \)
@@ -1453,11 +1380,12 @@
 		    where \( I = \{1,\dots,d\} \). \global\qedplacedtrue
 	\end{itemize}
     \end{proof}
+    }
 \end{frame}
 
 \begin{frame}
     \begin{proof}[Proof (continued)]
-        \begin{itemize}[<+->]
+        \begin{itemize}
             \item Then for every \( J \subseteq I \) we have 
                 \begin{equation*}
                     \Bigg( \prod_{i \in I \setminus J} H_{a_i}(k_i) \Bigg) \Bigg( \prod_{j \in J} H_{b_j+1}(k_j) \Bigg) = H_p(k_1,\dots,k_d)
@@ -1939,6 +1867,18 @@
     \end{tikzpicture}
 
     \vfil
+\end{frame}
+
+\begin{frame}    
+    \centering
+    \vfill
+    {\fontsize{22}{28}\selectfont\bfseries\color{ScreenshotBlue} Any questions?}
+    \vfill
+    {\qrcode[height=2cm]{https://github.com/mazmap/multidimensional-difference-arrays}\par}
+    \vspace{0.1cm}
+    \( \uparrow \) Slides \( \uparrow \) \par
+    \vspace{0.1cm}
+    (\texttt{https://github.com/mazmap/multidimensional-difference-arrays})
 \end{frame}
 
 \end{document}
