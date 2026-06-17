@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.6.7)  17 JUN 2026 22:29
+This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.6.7)  17 JUN 2026 22:44
  restricted system commands enabled.
  file:line:error style messages enabled.
 **multi-dimensional-difference-arrays.tex
@@ -1610,7 +1610,7 @@ Overfull \vbox (6.33076pt too high) detected at line 960
 ] [52
 
 ]
-Overfull \vbox (6.30676pt too high) detected at line 1051
+Overfull \vbox (6.30676pt too high) detected at line 1053
  []
 
 [53
@@ -1621,7 +1621,7 @@ Overfull \vbox (6.30676pt too high) detected at line 1051
 \c@algpx@indentEndPage-4=\count461
 \c@algpx@indentEndPage-5=\count462
 )
-Overfull \vbox (24.39754pt too high) detected at line 1094
+Overfull \vbox (24.39754pt too high) detected at line 1096
  []
 
 [54
@@ -1630,7 +1630,7 @@ Overfull \vbox (24.39754pt too high) detected at line 1094
 \c@algpx@indentEndPage-6=\count463
 \c@algpx@indentEndPage-7=\count464
 )
-Overfull \vbox (24.39754pt too high) detected at line 1094
+Overfull \vbox (24.39754pt too high) detected at line 1096
  []
 
 [55
@@ -1650,19 +1650,19 @@ Overfull \vbox (24.39754pt too high) detected at line 1094
 ] [62
 
 ]
-Overfull \vbox (9.76012pt too high) detected at line 1176
+Overfull \vbox (9.76012pt too high) detected at line 1178
  []
 
 [63
 
 ]
-Overfull \vbox (9.76012pt too high) detected at line 1176
+Overfull \vbox (9.76012pt too high) detected at line 1178
  []
 
 [64
 
 ]
-Overfull \vbox (9.76012pt too high) detected at line 1176
+Overfull \vbox (9.76012pt too high) detected at line 1178
  []
 
 [65
@@ -1702,14 +1702,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 34--34
 ] [70
 
 ]
-Underfull \hbox (badness 1509) in paragraph at lines 1287--1287
+Underfull \hbox (badness 1509) in paragraph at lines 1289--1289
 [][][]\TU/AlegreyaSans(0)/b/n/11 Propo-si-tion:[][] \TU/AlegreyaSans(0)/m/n/11 Let $\TU/NewCMSansMath-Regular(1)/m/n/11 𝐷 = [][]\U/stmry/m/n/10.95 J\TU/NewCMSansMath-Regular(1)/m/n/11 𝑛[], 𝑚[]\U/stmry/m/n/10.95 K \TU/NewCMSansMath-Regular(1)/m/n/11 ⊆ ℤ[]$ \TU/AlegreyaSans(0)/m/n/11 be a fi-nite grid do-main and $\TU/NewCMSansMath-Regular(1)/m/n/11 𝑝 =
  []
 
 [71
 
 ]
-Underfull \hbox (badness 1509) in paragraph at lines 1287--1287
+Underfull \hbox (badness 1509) in paragraph at lines 1289--1289
 [][][]\TU/AlegreyaSans(0)/b/n/11 Propo-si-tion:[][] \TU/AlegreyaSans(0)/m/n/11 Let $\TU/NewCMSansMath-Regular(1)/m/n/11 𝐷 = [][]\U/stmry/m/n/10.95 J\TU/NewCMSansMath-Regular(1)/m/n/11 𝑛[], 𝑚[]\U/stmry/m/n/10.95 K \TU/NewCMSansMath-Regular(1)/m/n/11 ⊆ ℤ[]$ \TU/AlegreyaSans(0)/m/n/11 be a fi-nite grid do-main and $\TU/NewCMSansMath-Regular(1)/m/n/11 𝑝 =
  []
 
@@ -1718,43 +1718,43 @@ Underfull \hbox (badness 1509) in paragraph at lines 1287--1287
 ] [73
 
 ]
-Overfull \vbox (1.98521pt too high) detected at line 1324
+Overfull \vbox (1.98521pt too high) detected at line 1326
  []
 
 [74
 
 ]
-Overfull \vbox (15.81158pt too high) detected at line 1369
+Overfull \vbox (15.81158pt too high) detected at line 1371
  []
 
 [75
 
 ]
-Overfull \vbox (15.81158pt too high) detected at line 1369
+Overfull \vbox (15.81158pt too high) detected at line 1371
  []
 
 [76
 
 ]
-Overfull \vbox (15.81158pt too high) detected at line 1369
+Overfull \vbox (15.81158pt too high) detected at line 1371
  []
 
 [77
 
 ]
-Overfull \vbox (15.81158pt too high) detected at line 1369
+Overfull \vbox (15.81158pt too high) detected at line 1371
  []
 
 [78
 
 ]
-Overfull \vbox (11.3038pt too high) detected at line 1394
+Overfull \vbox (11.3038pt too high) detected at line 1396
  []
 
 [79
 
 ]
-Overfull \vbox (11.3038pt too high) detected at line 1394
+Overfull \vbox (11.3038pt too high) detected at line 1396
  []
 
 [80
@@ -1762,13 +1762,13 @@ Overfull \vbox (11.3038pt too high) detected at line 1394
 ] [81
 
 ]
-Overfull \vbox (14.43707pt too high) detected at line 1444
+Overfull \vbox (14.43707pt too high) detected at line 1446
  []
 
 [82
 
 ]
-Overfull \vbox (14.43707pt too high) detected at line 1444
+Overfull \vbox (14.43707pt too high) detected at line 1446
  []
 
 [83
@@ -1853,10 +1853,10 @@ Here is how much of LuaTeX's memory you used:
    1175 hlist, 7 vlist, 1091 rule, 3 disc, 37 local_par, 6 math, 204 glue, 10 kern, 44 penalty, 87 glyph, 2676 attribute, 69 glue_spec, 1339 attribute_list, 4 write, 1 pdf_start_link, 1 pdf_end_link, 1 pdf_action, 6 pdf_colorstack nodes
    avail lists: 1:1,2:16099,3:4502,4:478,5:521,6:151,7:6873,8:70,9:9122,10:23,11:96
  63405 multiletter control sequences out of 65536+600000
- 156 fonts using 78257923 bytes
+ 156 fonts using 78258071 bytes
  128i,13n,116p,1231b,1220s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/opentype/public/newcomputermodern/NewCMSansMath-Regular.otf></usr/local/texlive/2026/texmf-dist/fonts/opentype/public/newcomputermodern/NewCMSansMath-Regular.otf></Users/matteo/Library/Fonts/AlegreyaSans-Italic.ttf></usr/local/texlive/2026/texmf-dist/fonts/opentype/public/newcomputermodern/NewCMSansMath-Regular.otf></Library/Fonts/NewCMMono10-Regular.otf></Users/matteo/Library/Fonts/AlegreyaSans-Regular.ttf></Users/matteo/Library/Fonts/AlegreyaSans-Bold.ttf></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/stmaryrd/stmary10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/stmaryrd/stmary8.pfb>
-Output written on multi-dimensional-difference-arrays.pdf (104 pages, 274590 bytes).
+Output written on multi-dimensional-difference-arrays.pdf (104 pages, 274703 bytes).
 
 PDF statistics: 627 PDF objects out of 1000 (max. 8388607)
  486 compressed objects within 5 object streams
