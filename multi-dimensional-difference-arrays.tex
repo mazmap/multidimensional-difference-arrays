@@ -222,6 +222,15 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}{One-dimensional difference arrays}
+    The situation: 
+    \begin{itemize}[<+->] 
+        \item One-dimensional array of size \( N \) 
+        \item Update queries \( q_1, \dots, q_L \) of the form: \\
+            \uncover<3->{Each \( q_i \) updates all elements with indices in \emph{contigous range} \( D_j \) by a \emph{constant} \( C_i \)}
+    \end{itemize}
+\end{frame}
+
 % --- SLIDE 3: 1D ARRAYS ---
 \begin{frame}[fragile]{One-dimensional difference arrays}
     \begin{columns}[T]
@@ -401,6 +410,192 @@
 		\drawQueryBlock{Applying the total update}{-2*\rowBlockGap - \rowBlockGap/2}
 		
         \drawArrayRow{\texttt{A} + \texttt{\(\Sigma\)d}:}{*/0, +C/0, +C/0, +C/0, */0, */0, */0, */0, */0}{\maxIndex}{-3*\rowBlockGap}
+        }
+	    \end{tikzpicture}
+	\end{column}
+
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{One-dimensional difference arrays}
+    \begin{columns}[T]
+	\begin{column}<1->{0.45\textwidth}
+	    \begin{tikzpicture}
+		\def\cellWidth{0.6cm}    % Width of each array cell
+		\def\cellHeight{0.6cm}   % Height of each array cell
+		\def\indexGap{0.25cm}     % Vertical gap between indices and the array grid
+		\def\rowBlockGap{1.9cm}  % Total vertical spacing from the top of one array row block to the next
+		
+		% ==========================================
+		% Macro 1: Draw an array row
+		% #1: label text (e.g., A:)
+		% #2: comma-separated list of value/highlight pairs (e.g., 2/0, 6/1, 2/1) 
+		%     where 0 = normal cell, 1 = green highlighted cell
+		% #3: maximum index (e.g., 8 for 9 elements)
+		% #4: absolute y-coordinate for the *top* of the array grid
+		% ==========================================
+		\newcommand{\drawArrayRow}[4]{
+		    \begin{scope}[shift={(0,#4)}]
+			% Label "A:" at the left
+			\node at (-0.3, -\cellHeight/2) {{\ttfamily #1}};
+			
+			% Draw column indices above the array
+			\foreach \i in {0,...,#3} {
+			    \node[font=\footnotesize] at (\i*\cellWidth + \cellWidth/2, \indexGap) {\i};
+			}
+			
+			% 1. Fill the backgrounds for highlighted cells first
+			\foreach \val/\hl [count=\i from 0] in {#2} {
+			    \ifnum\hl=1
+				\fill[Green!5] (\i*\cellWidth, 0) rectangle ++(\cellWidth, -\cellHeight);
+                \else
+                \fill[white] (\i*\cellWidth, 0) rectangle ++(\cellWidth, -\cellHeight);
+			    \fi
+			}
+			
+			% 2. Draw the base black grid (prevents overlapping thick lines)
+			\draw[thick] (0, 0) grid[xstep=\cellWidth, ystep=\cellHeight] ++(#3*\cellWidth+\cellWidth, -\cellHeight);
+			
+			% 3. Redraw the green borders over the grid for highlighted cells
+			\foreach \val/\hl [count=\i from 0] in {#2} {
+			    \ifnum\hl=1
+				\draw[Green, thick] (\i*\cellWidth, 0) rectangle ++(\cellWidth, -\cellHeight);
+			    \fi
+			}
+			
+			% 4. Add the text nodes into the cells
+			\foreach \val/\hl [count=\i from 0] in {#2} {
+			    \ifnum\hl=1
+				\node[math node,text=Green] at (\i*\cellWidth + \cellWidth/2, -\cellHeight/2) {\val};
+			    \else
+				\node[math node,text=black] at (\i*\cellWidth + \cellWidth/2, -\cellHeight/2) {\val};
+			    \fi
+			}
+		    \end{scope}
+		}
+		
+		% ==========================================
+		% Macro 2: Draw a query arrow and text
+		% #1: query text (e.g., Apply Q1)
+		% #2: absolute y-coordinate to center the query block vertically
+		% ==========================================
+		\newcommand{\drawQueryBlock}[2]{
+		    \begin{scope}[shift={(0,#2)}]
+			 % Vertical arrow
+			 \draw[-Stealth, thick] (-0.3, 0.1) -- (-0.3, -0.65);
+			 % Query text to the right
+			 \node[anchor=north west, inner sep=0pt] at (0, 0) {#1};
+		    \end{scope}
+		}
+
+		\def\maxIndex{8} 
+
+		\drawArrayRow{A:}{\ast/0, \ast/0, \ast/0, \ast/0, \ast/0, \ast/0, \ast/0, \ast/0, \ast/0}{\maxIndex}{0}
+		
+		\drawQueryBlock{Apply queries}{-\rowBlockGap/2}
+		
+        \uncover<2->{\drawArrayRow{A:}{\ast/0, +1/1, +1/1, +1/1, \ast/0, \ast/0, \ast/0, \ast/0, \ast/0}{\maxIndex}{-\rowBlockGap}}
+        \uncover<3->{\drawArrayRow{A:}{\ast/0, +1/0, +2/1, +2/1, \ast/0, \ast/0, \ast/0, \ast/0, \ast/0}{\maxIndex}{-\rowBlockGap}}
+        \uncover<4->{\drawArrayRow{A:}{\ast/0, +1/0, +3/0, +3/0, \ast/0, -1/1, -1/1, -1/1, -1/1}{\maxIndex}{-\rowBlockGap}}
+        \uncover<5->{\drawArrayRow{A:}{\ast/0, +1/0, +3/0, +3/0, \ast/0, -1/0, -1/0, -1/0, -1/0}{\maxIndex}{-\rowBlockGap}}
+		
+	    \end{tikzpicture}
+	\end{column}
+
+    \begin{column}<6->{0.50\textwidth}
+	    \centering
+	    \begin{tikzpicture}
+		\def\cellWidth{0.6cm}    % Width of each array cell
+		\def\cellHeight{0.6cm}   % Height of each array cell
+		\def\indexGap{0.25cm}     % Vertical gap between indices and the array grid
+		\def\rowBlockGap{1.9cm}  % Total vertical spacing from the top of one array row block to the next
+		
+		% ==========================================
+		% Macro 1: Draw an array row
+		% #1: label text (e.g., A:)
+		% #2: comma-separated list of value/highlight pairs (e.g., 2/0, 6/1, 2/1) 
+		%     where 0 = normal cell, 1 = green highlighted cell
+		% #3: maximum index (e.g., 8 for 9 elements)
+		% #4: absolute y-coordinate for the *top* of the array grid
+		% ==========================================
+		\newcommand{\drawArrayRow}[4]{
+		    \begin{scope}[shift={(0,#4)}]
+			% Label "A:" at the left
+            \node[anchor=east] at (0, -\cellHeight/2) {#1};
+			
+			% Draw column indices above the array
+			\foreach \i in {0,...,#3} {
+			    \node[font=\footnotesize] at (\i*\cellWidth + \cellWidth/2, \indexGap) {\i};
+			}
+			
+			% 1. Fill the backgrounds for highlighted cells first
+			\foreach \val/\hl [count=\i from 0] in {#2} {
+			    \ifnum\hl=1
+				\fill[Green!5] (\i*\cellWidth, 0) rectangle ++(\cellWidth, -\cellHeight);
+                \else
+                \fill[white] (\i*\cellWidth, 0) rectangle ++(\cellWidth, -\cellHeight);
+			    \fi
+			}
+			
+			% 2. Draw the base black grid (prevents overlapping thick lines)
+			\draw[thick] (0, 0) grid[xstep=\cellWidth, ystep=\cellHeight] ++(#3*\cellWidth+\cellWidth, -\cellHeight);
+			
+			% 3. Redraw the green borders over the grid for highlighted cells
+			\foreach \val/\hl [count=\i from 0] in {#2} {
+			    \ifnum\hl=1
+				\draw[Green, thick] (\i*\cellWidth, 0) rectangle ++(\cellWidth, -\cellHeight);
+			    \fi
+			}
+			
+			% 4. Add the text nodes into the cells
+			\foreach \val/\hl [count=\i from 0] in {#2} {
+			    \ifnum\hl=1
+				\node[math node,text=Green] at (\i*\cellWidth + \cellWidth/2, -\cellHeight/2) {\val};
+			    \else
+				\node[math node,text=black] at (\i*\cellWidth + \cellWidth/2, -\cellHeight/2) {\val};
+			    \fi
+			}
+		    \end{scope}
+		}
+		
+		% ==========================================
+		% Macro 2: Draw a query arrow and text
+		% #1: query text (e.g., Apply Q1)
+		% #2: absolute y-coordinate to center the query block vertically
+		% ==========================================
+		\newcommand{\drawQueryBlock}[2]{
+		    \begin{scope}[shift={(0,#2)}]
+			 % Vertical arrow
+			 \draw[-Stealth, thick] (-0.3, 0.1) -- (-0.3, -0.65);
+			 % Query text to the right
+			 \node[anchor=north west, inner sep=0pt] at (0, 0) {#1};
+		    \end{scope}
+		}
+
+		\def\maxIndex{8} 
+
+        \drawArrayRow{\texttt{d}:}{0/0, 0/0, 0/0, 0/0, 0/0, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{0}
+		
+		\drawQueryBlock{Mark queries}{-\rowBlockGap/2}
+
+        \uncover<7->{
+        \drawArrayRow{\texttt{d}:}{0/0, +1/1, 0/0, 0/0, -1/1, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{-\rowBlockGap}
+        }
+		
+        \uncover<8->{\drawArrayRow{\texttt{d}:}{0/0, 1/0, +2/1, 0/0, -2/1, 0/0, 0/0, 0/0, 0/0}{\maxIndex}{-\rowBlockGap}}
+        \uncover<9->{\drawArrayRow{\texttt{d}:}{0/0, 1/0, +2/0, 0/0, -2/0, -1/1, 0/0, 0/0, 0/0}{\maxIndex}{-\rowBlockGap}}
+        \uncover<10->{\drawArrayRow{\texttt{d}:}{0/0, 1/0, 2/0, 0/0, -2/0, -1/0, 0/0, 0/0, 0/0}{\maxIndex}{-\rowBlockGap}}
+
+        \uncover<11->{
+		\drawQueryBlock{Cumulative sum}{-\rowBlockGap - \rowBlockGap/2}
+		
+        \drawArrayRow{\(\Sigma\)\texttt{d}:}{0/0, 1/0, 3/0, 3/0, 0/0, -1/0, -1/0, -1/0, -1/0}{\maxIndex}{-2*\rowBlockGap}
+        }
+
+        \uncover<12->{
+		\drawQueryBlock{Applying the total update}{-2*\rowBlockGap - \rowBlockGap/2}
+		
+        \drawArrayRow{\texttt{A} + \texttt{\(\Sigma\)d}:}{\ast/0, +1/0, +3/0, +3/0, \ast/0, -1/0, -1/0, -1/0, -1/0}{\maxIndex}{-3*\rowBlockGap}
         }
 	    \end{tikzpicture}
 	\end{column}
@@ -632,7 +827,7 @@
 \begin{frame}
     \begin{definition*}{constant update queries}
         \begin{itemize}[<+->]
-            \item A discrete map \( q : D \to \mathbb{R} \) which is constant on the \emph{update range} \( D_q = \prod_{i=1}^d \llbracket a_i, b_i \rrbracket \subseteq D \) is called \emph{constant update query}
+            \item A \emph{constant update query} is a discrete map \( q : D \to \mathbb{R} \) which is constant on a finite grid (sub)domain \( D_q = \prod_{i=1}^d \llbracket a_i, b_i \rrbracket \subseteq D \) (its \emph{update range})
             \item In other words, \( q = C \cdot \mathbb{1}_{D_q} \) with \( C \in \mathbb{R} \) (the \emph{update value} of \( q \))
             \item \( \card(D_q) \) is the \emph{size} of \( q \) 
         \end{itemize}
